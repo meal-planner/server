@@ -1,16 +1,21 @@
 require 'sinatra'
 require_relative 'ingredient'
 
-post '/ingredients' do
-  body = JSON.parse request.body.read
-  ingredient = Ingredient.new body
+helpers do
+  def input_request
+    body = request.body.read
+    halt 400, {error: 'Payload missing.'}.to_json if body.empty?
 
-  if ingredient.valid?
-    ingredient.save
-    status 201
-    ingredient.to_json
-  else
-    status 422
-    ingredient.errors.to_json
+    JSON.parse body
   end
+end
+
+post '/ingredients' do
+  ingredient = Ingredient.new input_request
+
+  halt 422, ingredient.errors.to_json unless ingredient.valid?
+
+  ingredient.save
+  status 201
+  ingredient.to_json
 end
