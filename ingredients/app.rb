@@ -19,3 +19,16 @@ post '/ingredients' do
   status 201
   ingredient.to_json
 end
+
+get '/ingredients' do
+  Ingredient.all.to_json
+end
+
+delete '/ingredients/:id' do
+  begin
+    ingredient = Ingredient.find params[:id]
+    ingredient.destroy
+  rescue Elasticsearch::Persistence::Repository::DocumentNotFound
+    halt 404, {error: 'Ingredient not found.'}.to_json
+  end
+end
