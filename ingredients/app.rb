@@ -21,13 +21,20 @@ post '/ingredients' do
 end
 
 get '/ingredients' do
-  Ingredient.all.to_json
+  searchText = params[:query]
+  if searchText
+    results = Ingredient.search query: {prefix: {name: searchText}}
+  else
+    results = Ingredient.all
+  end
+  results.to_json
 end
 
 delete '/ingredients/:id' do
   begin
     ingredient = Ingredient.find params[:id]
     ingredient.destroy
+    halt 200
   rescue Elasticsearch::Persistence::Repository::DocumentNotFound
     halt 404, {error: 'Ingredient not found.'}.to_json
   end
