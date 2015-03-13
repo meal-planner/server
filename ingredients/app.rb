@@ -21,11 +21,11 @@ post '/ingredients' do
 end
 
 get '/ingredients' do
-  searchText = params[:query]
-  if searchText
-    results = Ingredient.search query: {prefix: {name: searchText}}
+  query = params[:query]
+  if query
+    results = Ingredient.search query: {prefix: {name: query}}, size: 6
   else
-    results = Ingredient.all
+    results = Ingredient.search query: {match_all: {}}, size: 6
   end
   results.to_json
 end
