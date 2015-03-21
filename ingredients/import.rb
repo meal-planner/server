@@ -102,5 +102,5 @@ class Importer
   end
 end
 
-importer = Importer.new('cFgF6sRMTp8jmbE4zfJtuSFrtPnm4DYqnnOteXK6', start_from: 1600)
+importer = Importer.new('cFgF6sRMTp8jmbE4zfJtuSFrtPnm4DYqnnOteXK6')
 importer.import_all
