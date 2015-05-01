@@ -5,6 +5,7 @@ class Ingredient
 
   attribute :ndbno, String
   attribute :name, String
+  attribute :short_name, String
   attribute :group, String
   attribute :nutrients, Hash
 
