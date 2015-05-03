@@ -5,11 +5,11 @@ class Recipe
 
   attribute :name, String
   attribute :time_to_cook, String
-  attribute :directions, String
-  attribute :ingredients, Hash
+  attribute :ingredients, Array
+  attribute :steps, Array
 
   validates :name, presence: true
   validates :time_to_cook, presence: true
-  validates :directions, presence: true
   validates :ingredients, presence: true
+  validates :steps, presence: true
 end

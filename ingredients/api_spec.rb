@@ -11,7 +11,7 @@ describe 'Ingredients REST API' do
     IngredientAPI.new
   end
 
-  context 'updating existing ingredient' do
+  context 'updating ingredient' do
     let(:ingredient) { Ingredient.new }
 
     it 'returns 404 if ingredient not found' do
@@ -38,6 +38,33 @@ describe 'Ingredients REST API' do
 
       expect(last_response.status).to eq 400
       expect(last_response.body).to include 'Request could not be processed.'
+    end
+
+    it 'returns 400 error if nutrients param is empty' do
+      allow(Ingredient).to receive(:find).and_return(ingredient)
+
+      put '/fooId', {name: 'ingredient name'}.to_json
+
+      expect(last_response.status).to eq 400
+      expect(last_response.body).to include 'Missing required parameter: nutrients.'
+    end
+
+    it 'returns 400 error if nutrient measures param is empty' do
+      allow(Ingredient).to receive(:find).and_return(ingredient)
+
+      request = {
+          name: 'foo name',
+          nutrients: {
+              energy: {
+                  unit: 'g'
+              }
+          }
+      }
+
+      put '/fooId', request.to_json
+
+      expect(last_response.status).to eq 400
+      expect(last_response.body).to include 'Nutrient energy is missing required param: nutrients.'
     end
 
     it 'filters nutrients request' do
