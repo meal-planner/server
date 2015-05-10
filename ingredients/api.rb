@@ -9,7 +9,8 @@ class IngredientAPI < Sinatra::Base
       body = request.body.read
       halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
       begin
-        request = JSON.parse(body).extract!('name', 'short_name', 'group', 'nutrients')
+        attributes = Ingredient.attribute_set.map {|attr| attr.name.to_s}
+        request = JSON.parse(body).extract!(*attributes)
         nutrients = {}
         Hash(request['nutrients']).each_key do |nutrient_name|
           nutrient = request['nutrients'][nutrient_name].extract!('unit', 'group', 'measures')
@@ -67,10 +68,9 @@ class IngredientAPI < Sinatra::Base
   put '/:id' do
     ingredient = load_ingredient
     request = parse_request
-    ingredient[:name] = request['name']
-    ingredient[:short_name] = request['short_name']
-    ingredient[:group] = request['group']
-    ingredient[:nutrients] = request['nutrients']
+    Ingredient.attribute_set.each do |attr|
+      ingredient[attr.name] = request[attr.name.to_s] unless request[attr.name.to_s].nil?
+    end
     ingredient.save
     halt 200
   end

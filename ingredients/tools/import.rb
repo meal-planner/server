@@ -42,6 +42,11 @@ class Importer
         324 => :vitamin_d,
         430 => :vitamin_k,
         262 => :caffeine,
+        312 => :copper,
+        315 => :manganese,
+        317 => :selenium,
+        313 => :fluoride,
+        410 => :pantothenic_acid
     }
   end
 

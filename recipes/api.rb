@@ -10,18 +10,14 @@ class RecipeAPI < Sinatra::Base
       halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
 
       begin
-        request = JSON.parse(body).extract!('name', 'time_to_cook', 'steps', 'ingredients', 'nutrients')
-        ingredients = []
-        Array(request['ingredients']).each do |ingredient_request|
-          ingredient = ingredient_request.extract!('id', 'name', 'short_name', 'group', 'measure', 'measure_amount')
-          ingredients.push ingredient
+        attributes = Recipe.attribute_set.map {|attr| attr.name.to_s}
+        request = JSON.parse(body).extract!(*attributes)
+        Array(request['ingredients']).map! do |ingredient|
+          ingredient.extract!('id', 'name', 'short_name', 'group', 'measure', 'measure_amount')
         end
-        request['ingredients'] = ingredients
-        nutrients = {}
-        Hash(request['nutrients']).each_key do |nutrient_name|
-          nutrients[nutrient_name] = request['nutrients'][nutrient_name].to_f
+        Hash(request['nutrients']).each_key do |name|
+          request['nutrients'][name] = request['nutrients'][name].to_f
         end
-        request['nutrients'] = nutrients
       rescue
         halt 400, {error: 'Request could not be processed.'}.to_json
       end
@@ -64,11 +60,9 @@ class RecipeAPI < Sinatra::Base
   put '/:id' do
     recipe = load_recipe
     request = parse_request
-    recipe[:name] = request['name']
-    recipe[:time_to_cook] = request['time_to_cook']
-    recipe[:ingredients] = request['ingredients']
-    recipe[:nutrients] = request['nutrients']
-    recipe[:steps] = request['steps']
+    Recipe.attribute_set.each do |attr|
+      recipe[attr.name] = request[attr.name.to_s] unless request[attr.name.to_s].nil?
+    end
     recipe.save
     halt 200
   end

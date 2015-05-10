@@ -5,6 +5,9 @@ class Recipe
 
   attribute :name, String
   attribute :time_to_cook, Integer
+  attribute :servings, Integer
+  attribute :serving_size, Integer
+  attribute :serving_label, String
   attribute :ingredients, Array
   attribute :nutrients, Hash
   attribute :steps, Array
