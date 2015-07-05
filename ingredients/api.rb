@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'newrelic_rpm'
 require 'active_support/core_ext/hash/slice'
 require_relative 'ingredient'
 
