@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'json'
 gem 'elasticsearch-persistence'
 gem 'capistrano'
+gem 'capistrano-rvm'
 gem 'unicorn'
 gem 'newrelic_rpm'
 
