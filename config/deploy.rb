@@ -3,7 +3,7 @@ lock '3.4.0'
 
 set :application, 'meal-planner.org'
 set :repo_url, 'git@github.com:meal-planner/server.git'
-set :deploy_to, '/var/www/meal-planner.org/api/'
+set :deploy_to, '/var/www/meal-planner.org/server/'
 set :log_level, :info
 
 namespace :unicorn do
