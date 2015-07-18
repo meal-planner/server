@@ -48,6 +48,10 @@ class RecipeAPI < Sinatra::Base
     load_recipe.to_json
   end
 
+  options '/' do
+    halt 200
+  end
+
   post '/' do
     recipe = Recipe.new parse_request
 
@@ -56,6 +60,10 @@ class RecipeAPI < Sinatra::Base
     recipe.save
     status 201
     recipe.to_json
+  end
+
+  options '/:id' do
+    halt 200
   end
 
   put '/:id' do
