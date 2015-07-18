@@ -6,6 +6,15 @@ set :repo_url, 'git@github.com:meal-planner/server.git'
 set :deploy_to, '/var/www/meal-planner.org/server/'
 set :log_level, :info
 
+namespace :deploy do
+  desc 'Copy NewRelic config file'
+  task :copy_config do
+    on roles(:app) do
+      execute :cp, "#{shared_path}/newrelic.yml", "#{release_path}/config"
+    end
+  end
+end
+
 namespace :unicorn do
   pid_path = "#{shared_path}/pids"
   unicorn_pid = "#{pid_path}/unicorn.pid"
@@ -52,4 +61,5 @@ namespace :unicorn do
   end
 end
 
+before 'deploy:publishing', 'deploy:copy_config'
 after 'deploy:publishing', 'unicorn:restart'
