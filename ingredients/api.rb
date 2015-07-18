@@ -12,21 +12,18 @@ class IngredientAPI < Sinatra::Base
       begin
         attributes = Ingredient.attribute_set.map {|attr| attr.name.to_s}
         request = JSON.parse(body).extract!(*attributes)
-        nutrients = {}
-        Hash(request['nutrients']).each_key do |nutrient_name|
-          nutrient = request['nutrients'][nutrient_name].extract!('unit', 'group', 'measures')
-          measures = []
-          Array(nutrient['measures']).each do |measure|
-            measure = measure.extract!('qty', 'label', 'eqv', 'value')
-            measure['value'] = measure['value'].to_f
-            measures.push measure
+        measures = []
+        Array(request['measures']).each do |measure|
+          measure = measure.extract!('qty', 'label', 'eqv', 'value', 'nutrients')
+          nutrients = {}
+          Hash(measure['nutrients']).each_key do |nutrient|
+            nutrients[nutrient] = measure['nutrients'][nutrient].to_f
           end
-          halt 400, {error: "Nutrient #{nutrient_name} is missing required param: nutrients."} if measures.empty?
-          nutrient['measures'] = measures
-          nutrients[nutrient_name] = nutrient
+          measure['nutrients'] = nutrients
+          measures.push measure
         end
-        halt 400, {error: 'Missing required parameter: nutrients.'} if nutrients.empty?
-        request['nutrients'] = nutrients
+        halt 400, {error: 'Missing required parameter: measures.'} if measures.empty?
+        request['measures'] = measures
       rescue
         halt 400, {error: 'Request could not be processed.'}.to_json
       end

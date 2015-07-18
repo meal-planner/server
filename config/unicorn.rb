@@ -15,7 +15,7 @@ pid pid_file
 stderr_path err_log
 stdout_path log_file
 
-before_fork do |server, worker|
+before_fork do |server, _|
   # zero downtime deploy magic:
   # if unicorn is already running, ask it to start a new process and quit.
   if File.exists?(old_pid) && server.pid != old_pid

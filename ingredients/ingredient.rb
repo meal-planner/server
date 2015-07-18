@@ -7,8 +7,8 @@ class Ingredient
   attribute :name, String
   attribute :short_name, String
   attribute :group, String
-  attribute :nutrients, Hash
+  attribute :measures, Array
 
   validates :name, presence: true
-  validates :nutrients, presence: true
+  validates :measures, presence: true
 end

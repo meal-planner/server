@@ -1,38 +1,31 @@
-require_relative 'ingredient'
+require_relative '../ingredient'
 
 class Converter
   def self.convert
-    ingredients = Ingredient.search query: {match_all: {}}, sort: [{ndbno: {order: 'asc'}}], from: 8000, size: 1000
+    ingredients = Ingredient.search query: {match_all: {}}, sort: [{ndbno: {order: 'asc'}}], from: 0, size: 1000
     ingredients.each do |ingredient|
       print "Converting #{ingredient.ndbno}..."
-      new_nutrients = {}
-      need_to_save = true
-      ingredient.nutrients.each do |nutrient|
-        name, data = nutrient[0], nutrient[1]
-        if data.has_key?('value')
-          default_measure = {
-              label: 'g',
-              eqv: 100,
-              qty: 100,
-              value: data['value']
-          }
-          measures = [default_measure, data['measures']].flatten!
-          new_nutrients[name] = {
-              group: data['group'],
-              unit: data['unit'],
-              measures: measures
-          }
-        else
-          need_to_save = false
+      if ingredient.measures.length > 0
+        puts 'skip'
+      else
+        measures = []
+        ingredient.nutrients.each do |name, data|
+          data['measures'].each_with_index do |measure, index|
+            unless measures[index]
+              measures[index] = {
+                  label: measure['label'],
+                  eqv: measure['eqv'],
+                  qty: measure['qty'],
+                  nutrients: {}
+              }
+            end
+            measures[index][:nutrients][name] = measure['value']
+          end
         end
-      end
-
-      if need_to_save
-        ingredient.nutrients = new_nutrients
+        ingredient.measures = measures
+        ingredient.nutrients = nil
         ingredient.save
         puts 'done'
-      else
-        puts 'skipped'
       end
     end
   end

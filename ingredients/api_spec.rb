@@ -40,31 +40,13 @@ describe 'Ingredients REST API' do
       expect(last_response.body).to include 'Request could not be processed.'
     end
 
-    it 'returns 400 error if nutrients param is empty' do
+    it 'returns 400 error if measures param is empty' do
       allow(Ingredient).to receive(:find).and_return(ingredient)
 
       put '/fooId', {name: 'ingredient name'}.to_json
 
       expect(last_response.status).to eq 400
-      expect(last_response.body).to include 'Missing required parameter: nutrients.'
-    end
-
-    it 'returns 400 error if nutrient measures param is empty' do
-      allow(Ingredient).to receive(:find).and_return(ingredient)
-
-      request = {
-          name: 'foo name',
-          nutrients: {
-              energy: {
-                  unit: 'g'
-              }
-          }
-      }
-
-      put '/fooId', request.to_json
-
-      expect(last_response.status).to eq 400
-      expect(last_response.body).to include 'Nutrient energy is missing required param: nutrients.'
+      expect(last_response.body).to include 'Missing required parameter: measures.'
     end
 
     it 'filters nutrients request' do
@@ -78,22 +60,17 @@ describe 'Ingredients REST API' do
           name: 'ingredient name',
           short_name: 'short name',
           group: 'ingredient group',
-          nutrients: {
-              energy: {
-                  unit: 'kcal',
-                  group: 'Proximates',
-                  not_allowed_attr: 'should be filtered out',
-                  measures: [
-                      {
-                          qty: 100,
-                          label: 'g',
-                          eqv: 100,
-                          value: 200,
-                          baz_attr: 'should also be filtered out'
-                      }
-                  ]
+          measures: [
+              {
+                  qty: 100,
+                  label: 'g',
+                  eqv: 100,
+                  baz_attr: 'should also be filtered out',
+                  nutrients: {
+                      energy: 100
+                  }
               }
-          }
+          ]
       }
 
       put '/fooId', request.to_json
@@ -102,16 +79,16 @@ describe 'Ingredients REST API' do
       expect(ingredient[:name]).to eq request[:name]
       expect(ingredient[:short_name]).to eq request[:short_name]
       expect(ingredient[:group]).to eq request[:group]
-      actual_nutrient = ingredient[:nutrients]['energy']
-      expected_nutrient = request[:nutrients][:energy]
-      expect(actual_nutrient['unit']).to eq expected_nutrient[:unit]
-      expect(actual_nutrient['group']).to eq expected_nutrient[:group]
-      expect(actual_nutrient['not_allowed_attr']).to be_nil
-      expect(actual_nutrient['measures'][0]['qty']).to eq expected_nutrient[:measures][0][:qty]
-      expect(actual_nutrient['measures'][0]['label']).to eq expected_nutrient[:measures][0][:label]
-      expect(actual_nutrient['measures'][0]['eqv']).to eq expected_nutrient[:measures][0][:eqv]
-      expect(actual_nutrient['measures'][0]['value']).to eq expected_nutrient[:measures][0][:value]
-      expect(actual_nutrient['measures'][0]['baz_attr']).to be_nil
+      expect(ingredient['measures'].size).to eq 1
+
+      actual_measure = ingredient['measures'][0]
+      expected_measure = request[:measures][0]
+      expect(actual_measure['qty']).to eq expected_measure[:qty]
+      expect(actual_measure['label']).to eq expected_measure[:label]
+      expect(actual_measure['eqv']).to eq expected_measure[:eqv]
+      expect(actual_measure['value']).to eq expected_measure[:value]
+      expect(actual_measure['nutrients']['energy']).to eq expected_measure[:nutrients][:energy]
+      expect(actual_measure['baz_attr']).to be_nil
     end
 
     it 'converts measure values to float' do
@@ -119,20 +96,18 @@ describe 'Ingredients REST API' do
       expect(ingredient).to receive(:save)
 
       request = {
-          nutrients: {
-              energy: {
-                  measures: [
-                      {
-                          value: '100.5f'
-                      }
-                  ]
+          measures: [
+              {
+                  nutrients: {
+                      energy: '100.5f'
+                  }
               }
-          }
+          ]
       }
       put '/fooId', request.to_json
 
       expect(last_response).to be_ok
-      expect(ingredient[:nutrients]['energy']['measures'][0]['value']).to eq 100.5
+      expect(ingredient['measures'][0]['nutrients']['energy']).to eq 100.5
     end
   end
 
