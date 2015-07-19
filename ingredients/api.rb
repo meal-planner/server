@@ -44,7 +44,13 @@ class IngredientAPI < Sinatra::Base
     if query
       results = Ingredient.search query: {multi_match: {query: query, fields: %w(short_name^2 name)}}, size: 18
     else
-      results = Ingredient.search query: {match_all: {}}, sort: {created_at: {order: 'desc'}}, size: 6
+      group = params[:group]
+      if group
+        query = {match: {group: group}}
+      else
+        query = {match_all: {}}
+      end
+      results = Ingredient.search query: query, sort: {created_at: {order: 'desc'}}, size: 6
     end
     results.to_json
   end
