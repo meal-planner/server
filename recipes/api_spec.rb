@@ -31,6 +31,9 @@ describe 'Recipes REST API' do
       request = {
           name: 'updated name',
           time_to_cook: 5,
+          dish_type: 'Snacks',
+          cuisine: %w{American Italian'},
+          key_ingredient: %w{Beef Bread},
           ingredients: [
               {
                   id: 'baz_id',
@@ -52,6 +55,9 @@ describe 'Recipes REST API' do
       expect(last_response).to be_ok
       expect(recipe[:name]).to eq request[:name]
       expect(recipe[:time_to_cook]).to eq request[:time_to_cook]
+      expect(recipe[:dish_type]).to eq request[:dish_type]
+      expect(recipe[:cuisine]).to eq request[:cuisine]
+      expect(recipe[:key_ingredient]).to eq request[:key_ingredient]
       actual_ingredient = recipe[:ingredients].first
       expected_ingredient = request[:ingredients].first
       expect(actual_ingredient['id']).to eq expected_ingredient[:id]

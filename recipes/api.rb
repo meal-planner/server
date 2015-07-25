@@ -11,7 +11,7 @@ class RecipeAPI < Sinatra::Base
       halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
 
       begin
-        attributes = Recipe.attribute_set.map {|attr| attr.name.to_s}
+        attributes = Recipe.attribute_set.map { |attr| attr.name.to_s }
         request = JSON.parse(body).extract!(*attributes)
         Array(request['ingredients']).map! do |ingredient|
           ingredient.extract!('id', 'name', 'short_name', 'group', 'measure', 'measure_amount')
@@ -39,7 +39,16 @@ class RecipeAPI < Sinatra::Base
     if query
       results = Recipe.search query: {match: {name: query}}, size: 18
     else
-      results = Recipe.search query: {match_all: {}}, sort: {created_at: {order: 'desc'}}, size: 6
+      filter_by = params[:filter_by]
+      filter_value = params[:filter_value]
+      if filter_by && filter_by.length > 0 && filter_value.length > 0
+        filter = {}
+        filter[filter_by] = filter_value
+        query = {match_phrase: filter}
+      else
+        query = {match_all: {}}
+      end
+      results = Recipe.search query: query, sort: {created_at: {order: 'desc'}}, size: 6
     end
     results.to_json
   end
