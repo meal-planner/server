@@ -51,14 +51,14 @@ describe 'Ingredients REST API' do
 
     it 'filters nutrients request' do
       ingredient[:name] = 'name before update'
-      ingredient[:short_name] = 'short name before update'
+      ingredient[:description] = 'description before update'
       ingredient[:group] = 'group before update'
       allow(Ingredient).to receive(:find).and_return(ingredient)
       expect(ingredient).to receive(:save)
 
       request = {
           name: 'ingredient name',
-          short_name: 'short name',
+          description: 'description',
           group: 'ingredient group',
           measures: [
               {
@@ -77,7 +77,7 @@ describe 'Ingredients REST API' do
 
       expect(last_response).to be_ok
       expect(ingredient[:name]).to eq request[:name]
-      expect(ingredient[:short_name]).to eq request[:short_name]
+      expect(ingredient[:description]).to eq request[:description]
       expect(ingredient[:group]).to eq request[:group]
       expect(ingredient['measures'].size).to eq 1
 

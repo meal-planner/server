@@ -5,8 +5,9 @@ class Ingredient
 
   attribute :ndbno, String
   attribute :name, String
-  attribute :short_name, String
+  attribute :description, String
   attribute :group, String
+  attribute :generic, Boolean
   attribute :measures, Array
 
   validates :name, presence: true

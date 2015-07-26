@@ -10,7 +10,7 @@ class IngredientAPI < Sinatra::Base
       body = request.body.read
       halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
       begin
-        attributes = Ingredient.attribute_set.map {|attr| attr.name.to_s}
+        attributes = Ingredient.attribute_set.map { |attr| attr.name.to_s }
         request = JSON.parse(body).extract!(*attributes)
         measures = []
         Array(request['measures']).each do |measure|
@@ -42,7 +42,7 @@ class IngredientAPI < Sinatra::Base
   get '/' do
     query = params[:query]
     if query
-      results = Ingredient.search query: {multi_match: {query: query, fields: %w(short_name^2 name)}}, size: 18
+      results = Ingredient.search query: {multi_match: {query: query, fields: %w(name^2 description)}}, sort: {generic: {order: 'desc'}}, size: 18
     else
       group = params[:group]
       if group
@@ -50,7 +50,7 @@ class IngredientAPI < Sinatra::Base
       else
         query = {match_all: {}}
       end
-      results = Ingredient.search query: query, sort: {created_at: {order: 'desc'}}, size: 6
+      results = Ingredient.search query: query, sort: {generic: {order: 'desc'}, created_at: {order: 'desc'}}, size: 8
     end
     results.to_json
   end
