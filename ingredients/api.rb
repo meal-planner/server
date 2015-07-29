@@ -59,7 +59,7 @@ class IngredientAPI < Sinatra::Base
     load_ingredient.to_json
   end
 
-  options '/:id' do
+  options '/' do
     halt 200
   end
 
