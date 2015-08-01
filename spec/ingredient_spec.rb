@@ -90,25 +90,6 @@ describe 'Ingredients REST API' do
       expect(actual_measure['nutrients']['energy']).to eq expected_measure[:nutrients][:energy]
       expect(actual_measure['baz_attr']).to be_nil
     end
-
-    it 'converts measure values to float' do
-      allow(Ingredient).to receive(:find).and_return(ingredient)
-      expect(ingredient).to receive(:save)
-
-      request = {
-          measures: [
-              {
-                  nutrients: {
-                      energy: '100.5f'
-                  }
-              }
-          ]
-      }
-      put '/fooId', request.to_json
-
-      expect(last_response).to be_ok
-      expect(ingredient['measures'][0]['nutrients']['energy']).to eq 100.5
-    end
   end
 
 end
