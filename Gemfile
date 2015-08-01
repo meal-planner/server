@@ -11,4 +11,5 @@ gem 'newrelic_rpm'
 group :test do
   gem 'rspec', :require => 'spec'
   gem 'rake'
+  gem 'rack-test'
 end
