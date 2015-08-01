@@ -2,7 +2,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'rspec'
 require 'rack/test'
-require_relative '../recipes/api'
+require_relative '../app/recipes/api'
 
 describe 'Recipes REST API' do
   include Rack::Test::Methods

@@ -12,6 +12,4 @@ Vagrant.configure(2) do |config|
     vb.memory = '1024'
     vb.cpus = '2'
   end
-
-  config.vm.provision 'shell', path: 'bootstrap.sh'
 end
