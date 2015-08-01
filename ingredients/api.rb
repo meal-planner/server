@@ -56,9 +56,6 @@ class IngredientAPI < Sinatra::Base
     load_ingredient.to_json
   end
 
-  options '/' do
-    halt 200
-  end
 
   post '/' do
     ingredient = Ingredient.new parse_request
@@ -68,10 +65,6 @@ class IngredientAPI < Sinatra::Base
     ingredient.save
     status 201
     ingredient.to_json
-  end
-
-  options '/:id' do
-    halt 200
   end
 
   put '/:id' do
