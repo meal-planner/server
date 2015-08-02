@@ -1,17 +1,16 @@
-require 'virtus/model'
 require 'elasticsearch/persistence/model'
-
-class Measure
-  include Virtus.model
-
-  attribute :qty, Integer
-  attribute :eqv, Integer
-  attribute :label, String
-  attribute :nutrients, Hash[Symbol => Float]
-end
 
 class Ingredient
   include Elasticsearch::Persistence::Model
+
+  class Measure
+    include Virtus.model
+
+    attribute :qty, Integer
+    attribute :eqv, Integer
+    attribute :label, String
+    attribute :nutrients, Hash[Symbol => Float]
+  end
 
   attribute :ndbno, String
   attribute :name, String

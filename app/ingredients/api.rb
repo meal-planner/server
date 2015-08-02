@@ -1,29 +1,11 @@
 require 'sinatra/base'
 require 'newrelic_rpm'
 require_relative 'ingredient'
+require_relative '../api_helpers'
 
 class IngredientAPI < Sinatra::Base
 
-  helpers do
-    def parse_request
-      body = request.body.read
-      halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
-      begin
-        request = JSON.parse(body)
-      rescue
-        halt 400, {error: 'Request could not be processed.'}.to_json
-      end
-      request
-    end
-
-    def load_ingredient
-      begin
-        Ingredient.find params[:id]
-      rescue Elasticsearch::Persistence::Repository::DocumentNotFound
-        halt 404, {error: 'Ingredient not found.'}.to_json
-      end
-    end
-  end
+  helpers ApiHelpers
 
   get '/' do
     query = params[:query]
@@ -42,33 +24,19 @@ class IngredientAPI < Sinatra::Base
   end
 
   get '/:id' do
-    load_ingredient.to_json
+    load_entity(Ingredient).to_json
   end
 
 
   post '/' do
-    ingredient = Ingredient.new parse_request
-
-    halt 422, ingredient.errors.to_json unless ingredient.valid?
-
-    ingredient.save
-    status 201
-    ingredient.to_json
+    create_entity Ingredient
   end
 
   put '/:id' do
-    ingredient = load_ingredient
-    request = parse_request
-    Ingredient.attribute_set.each do |attr|
-      ingredient[attr.name] = request[attr.name.to_s] unless request[attr.name.to_s].nil?
-    end
-    halt 422, ingredient.errors.to_json unless ingredient.valid?
-
-    ingredient.save
-    halt 200
+    update_entity Ingredient
   end
 
   delete '/:id' do
-    load_ingredient.destroy
+    load_entity(Ingredient).destroy
   end
 end
