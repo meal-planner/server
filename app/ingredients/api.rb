@@ -1,6 +1,5 @@
 require 'sinatra/base'
 require 'newrelic_rpm'
-require 'active_support/core_ext/hash/slice'
 require_relative 'ingredient'
 
 class IngredientAPI < Sinatra::Base
@@ -10,21 +9,11 @@ class IngredientAPI < Sinatra::Base
       body = request.body.read
       halt 400, {error: 'Payload is missing.'}.to_json if body.empty?
       begin
-        attributes = Ingredient.attribute_set.map { |attr| attr.name.to_s }
-        request = JSON.parse(body).extract!(*attributes)
-        measures = extract_measures(request)
-        halt 400, {error: 'Missing required parameter: measures.'} if measures.empty?
-        request['measures'] = measures
+        request = JSON.parse(body)
       rescue
         halt 400, {error: 'Request could not be processed.'}.to_json
       end
       request
-    end
-
-    def extract_measures(request)
-      Array(request['measures']).map do |measure|
-        measure.extract!('qty', 'label', 'eqv', 'value', 'nutrients')
-      end
     end
 
     def load_ingredient
@@ -73,6 +62,8 @@ class IngredientAPI < Sinatra::Base
     Ingredient.attribute_set.each do |attr|
       ingredient[attr.name] = request[attr.name.to_s] unless request[attr.name.to_s].nil?
     end
+    halt 422, ingredient.errors.to_json unless ingredient.valid?
+
     ingredient.save
     halt 200
   end
