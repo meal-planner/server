@@ -18,7 +18,9 @@ class IngredientAPI < Sinatra::Base
       else
         query = {match_all: {}}
       end
-      results = Ingredient.search query: query, sort: {generic: {order: 'desc'}, created_at: {order: 'desc'}}, size: 8
+      from = params[:start] ? params[:start]: 0
+      size = params[:size] ? params[:size] : 10
+      results = Ingredient.search query: query, sort: {generic: {order: 'desc'}, created_at: {order: 'desc'}}, from: from, size: size
     end
     results.to_json
   end
