@@ -10,6 +10,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.8)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -28,6 +29,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
+    dotenv (2.0.2)
     elasticsearch (1.0.12)
       elasticsearch-api (= 1.0.12)
       elasticsearch-transport (= 1.0.12)
@@ -51,10 +53,16 @@ GEM
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     hashie (3.4.2)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     ice_nine (0.11.1)
     json (1.8.3)
+    jwt (1.5.1)
     kgio (2.9.3)
+    koala (2.0.0)
+      addressable
+      faraday
+      multi_json
     minitest (5.7.0)
     multi_json (1.11.2)
     multipart-post (2.0.0)
@@ -110,8 +118,12 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   capistrano-rvm
+  dotenv
   elasticsearch-persistence
+  httpclient
   json
+  jwt
+  koala
   newrelic_rpm
   rack-test
   rake

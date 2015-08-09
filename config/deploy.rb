@@ -11,6 +11,7 @@ namespace :deploy do
   task :copy_config do
     on roles(:app) do
       execute :cp, "#{shared_path}/newrelic.yml", "#{release_path}/config"
+      execute :cp, "#{shared_path}/.env", "#{release_path}/config"
     end
   end
 end

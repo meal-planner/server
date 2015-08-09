@@ -7,6 +7,10 @@ gem 'capistrano'
 gem 'capistrano-rvm'
 gem 'unicorn'
 gem 'newrelic_rpm'
+gem 'jwt'
+gem 'httpclient'
+gem 'dotenv'
+gem 'koala'
 
 group :test do
   gem 'rspec', :require => 'spec'
