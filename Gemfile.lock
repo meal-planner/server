@@ -15,6 +15,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    bcrypt (3.1.10)
     builder (3.2.2)
     capistrano (3.4.0)
       i18n
@@ -116,6 +117,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   capistrano
   capistrano-rvm
   dotenv

@@ -11,6 +11,7 @@ gem 'jwt'
 gem 'httpclient'
 gem 'dotenv'
 gem 'koala'
+gem 'bcrypt'
 
 group :test do
   gem 'rspec', :require => 'spec'

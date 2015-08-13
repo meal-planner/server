@@ -14,14 +14,18 @@ class AuthAPI < Sinatra::Base
     request = parse_request
     oauth = Koala::Facebook::OAuth.new(request['clientId'], ENV['FACEBOOK_SECRET'], request['redirectUri'])
     token = oauth.get_access_token(request['code'])
+    halt 401, {error: 'Invalid token'}.to_json unless token
 
     graph = Koala::Facebook::API.new(token)
     facebook = graph.get_object('me', {fields: 'id,name,email'})
-    user = User.search(query: {match: {facebook: facebook['id']}}).first
+    user = User.find_by_oauth(:facebook, facebook['id'])
     if user.blank?
-      user = User.new({email: facebook['email'], display_name: facebook['name'], password: SecureRandom.hex})
-      picture = graph.get_user_picture_data('me')
-      user.avatar = picture['data']['url']
+      user = User.find_by_email(facebook['email'])
+      if user.blank?
+        user = User.new({email: facebook['email'], display_name: facebook['name'], password: SecureRandom.hex})
+        picture = graph.get_user_picture_data('me')
+        user.avatar = picture['data']['url']
+      end
       user.facebook = facebook['id']
       user.save
     end
