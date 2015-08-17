@@ -15,7 +15,6 @@ class User
   attribute :twitter, String
 
   validates :display_name, presence: true
-  validates :email, presence: true
 
   def self.find_by_email(email)
     self.search({query: {filtered: {filter: {term: {email: email}}}}}).first.presence

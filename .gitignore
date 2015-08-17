@@ -1,3 +1,4 @@
 .vagrant
 .idea
 config/.env
+config/client_secrets.json
