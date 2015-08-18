@@ -1,12 +1,10 @@
 require 'active_support/core_ext/object'
 require 'sinatra/base'
 require 'newrelic_rpm'
-require 'koala'
-require 'google/api_client/client_secrets'
-require 'google/apis/plus_v1'
 require 'twitter_oauth'
 require 'redis'
 require_relative '../api_helpers'
+require_relative 'oauth'
 require_relative 'user'
 require_relative 'token'
 
@@ -14,52 +12,27 @@ class AuthAPI < Sinatra::Base
 
   helpers ApiHelpers
 
-  post '/facebook' do
-    request = parse_request
-    oauth = Koala::Facebook::OAuth.new(request['clientId'], ENV['FACEBOOK_SECRET'], request['redirectUri'])
-    token = oauth.get_access_token(request['code'])
-    halt 401, {error: 'Invalid token'}.to_json unless token
-
-    graph = Koala::Facebook::API.new(token)
-    facebook = graph.get_object('me', {fields: 'id,name,email'})
-    user = User.find_by_oauth(:facebook, facebook['id'])
-    if user.blank?
-      user = User.find_by_email(facebook['email'])
-      if user.blank?
-        user = User.new({email: facebook['email'], display_name: facebook['name'], password: SecureRandom.hex})
+  %w{facebook google}.each do |provider|
+    post "/#{provider}" do
+      oauth = "Oauth::#{provider.capitalize}Client".constantize.new
+      if oauth.authorized?(parse_request)
+        user = User.find_by_oauth(provider, oauth.profile.provider_id)
+        if user.blank?
+          user = User.find_by_email(oauth.profile.email)
+          if user.blank?
+            user = User.new
+            user.email = oauth.profile.email
+            user.password = SecureRandom.hex
+          end
+        end
+        user.display_name = oauth.profile.display_name
+        user.avatar = oauth.profile.avatar
+        user[provider] = oauth.profile.provider_id
+        user.save
+        halt 200, {token: Token.encode(user.id)}.to_json
       end
-      picture = graph.get_user_picture_data('me')
-      user.avatar = picture['data']['url']
-      user.facebook = facebook['id']
-      user.save
+      halt 401, {error: 'Authentication failed'}.to_json
     end
-
-    {token: Token.encode(user.id)}.to_json
-  end
-
-  post '/google' do
-    request = parse_request
-
-    client_secrets = Google::APIClient::ClientSecrets.load
-    authorization = client_secrets.to_authorization
-    authorization.code = request['code']
-    authorization.fetch_access_token!
-    plus = Google::Apis::PlusV1::PlusService.new
-    profile = plus.get_person('me', options: {authorization: authorization})
-    email = profile.emails.first.value
-
-    user = User.find_by_oauth(:google, profile.id)
-    if user.blank?
-      user = User.find_by_email(email)
-      if user.blank?
-        user = User.new({email: email, display_name: profile.display_name, password: SecureRandom.hex})
-      end
-      user.avatar = profile.image.url
-      user.google = profile.id
-      user.save
-    end
-
-    {token: Token.encode(user.id)}.to_json
   end
 
   post '/twitter' do
