@@ -42,6 +42,7 @@ class AuthAPI < Sinatra::Base
           user = User.new
           user.email = oauth.profile.email
           user.password = SecureRandom.hex
+          user.send_welcome_email
         end
       end
       user.display_name = oauth.profile.display_name

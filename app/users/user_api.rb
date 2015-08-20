@@ -18,6 +18,7 @@ class UserAPI < Sinatra::Base
     user = User.new request.extract!(*%w{display_name email password})
     halt 422, user.errors.to_json unless user.valid?
     user.save
+    user.send_welcome_email
 
     {token: Token.encode(user.id)}.to_json if user.id
   end

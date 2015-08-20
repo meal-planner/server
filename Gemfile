@@ -16,6 +16,7 @@ gem 'google-api-client', '0.9.pre3'
 gem 'twitter_oauth'
 gem 'bcrypt'
 gem 'redis'
+gem 'sendgrid-ruby'
 
 group :test do
   gem 'rspec', :require => 'spec'
