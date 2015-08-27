@@ -4,7 +4,6 @@ require 'newrelic_rpm'
 require_relative '../api_helpers'
 require_relative 'oauth'
 require_relative 'user'
-require_relative 'token'
 
 class AuthAPI < Sinatra::Base
 
@@ -48,8 +47,7 @@ class AuthAPI < Sinatra::Base
       user.display_name = oauth.profile.display_name
       user.avatar = oauth.profile.avatar
       user[provider] = oauth.profile.provider_id
-      user.save
-      halt 200, {token: Token.encode(user.id)}.to_json
+      halt 200, user.login!
     end
     halt 401, {error: 'Authentication failed'}.to_json
   end

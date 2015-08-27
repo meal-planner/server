@@ -3,7 +3,6 @@ require 'newrelic_rpm'
 require 'active_support/core_ext/hash'
 require_relative '../api_helpers'
 require_relative 'user'
-require_relative 'token'
 
 class UserAPI < Sinatra::Base
 
@@ -20,7 +19,7 @@ class UserAPI < Sinatra::Base
     user.save
     user.send_welcome_email
 
-    {token: Token.encode(user.id)}.to_json if user.id
+    user.login! if user.id
   end
 
   post '/login' do
@@ -28,18 +27,31 @@ class UserAPI < Sinatra::Base
 
     user = User.find_by_email(request['email'])
     if user && user.authenticate(request['password'])
-      halt 200, {token: Token.encode(user.id)}.to_json
+      halt 200, user.login!
     else
       halt 401, {error: 'Invalid email or password.'}.to_json
     end
   end
 
+  post '/password_reset_request' do
+    request = parse_request
+    user = User.find_by_email(request['email'])
+    user.send_password_reset unless user.blank?
+  end
+
+  post '/reset_password' do
+    request = parse_request
+    user = User.find_by_password_token(request['token'])
+    if user
+      user.password = request['new_password']
+      halt 200, user.login!
+    end
+    halt 401, {error: 'Invalid token'}.to_json
+  end
+
   get '/profile' do
     token = request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
-    payload = Token.new(token)
-    halt 401, {error: 'Token invalid.'}.to_json unless payload.valid?
-
-    user = User.find(payload.user_id)
+    user = User.find_by_auth_token(token)
 
     {display_name: user.display_name, email: user.email, avatar: user.avatar}.to_json
   end
