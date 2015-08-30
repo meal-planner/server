@@ -33,7 +33,7 @@ class User
 
   def self.find_by_auth_token(token)
     payload = Token.new(token)
-    raise 'Token invalid.' unless payload.valid?
+    raise SecurityError, 'Token invalid.' unless payload.valid?
 
     self.find(payload.user_id)
   end

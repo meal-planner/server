@@ -29,7 +29,6 @@ class IngredientAPI < Sinatra::Base
     load_entity(Ingredient).to_json
   end
 
-
   post '/' do
     create_entity Ingredient
   end

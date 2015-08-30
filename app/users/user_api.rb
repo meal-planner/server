@@ -50,8 +50,7 @@ class UserAPI < Sinatra::Base
   end
 
   get '/profile' do
-    token = request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
-    user = User.find_by_auth_token(token)
+    user = get_authenticated_user
 
     {display_name: user.display_name, email: user.email, avatar: user.avatar}.to_json
   end

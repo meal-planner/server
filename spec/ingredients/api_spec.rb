@@ -3,6 +3,7 @@ ENV['RACK_ENV'] = 'test'
 require 'rspec'
 require 'rack/test'
 require_relative '../../app/ingredients/api'
+require_relative '../../app/users/user'
 
 describe 'Ingredients REST API' do
   include Rack::Test::Methods
@@ -13,6 +14,11 @@ describe 'Ingredients REST API' do
 
   context 'updating ingredient' do
     let(:ingredient) { Ingredient.new }
+    let(:user) { User.new }
+
+    before do
+      allow(User).to receive(:find_by_auth_token).and_return(user)
+    end
 
     it 'returns 404 if ingredient not found' do
       allow(Ingredient).to receive(:find).and_raise(Elasticsearch::Persistence::Repository::DocumentNotFound)

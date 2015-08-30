@@ -13,6 +13,11 @@ describe 'Recipes REST API' do
 
   context 'Updating recipe' do
     let(:recipe) { Recipe.new }
+    let(:user) { User.new }
+
+    before do
+      allow(User).to receive(:find_by_auth_token).and_return(user)
+    end
 
     it 'returns 404 if recipe not found' do
       allow(Recipe).to receive(:find).and_raise(Elasticsearch::Persistence::Repository::DocumentNotFound)

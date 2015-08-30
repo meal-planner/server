@@ -10,6 +10,15 @@ module ApiHelpers
     request
   end
 
+  def get_authenticated_user
+    begin
+      token = request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
+      User.find_by_auth_token(token)
+    rescue SecurityError
+      halt 401, {error: 'Authentication required'}.to_json
+    end
+  end
+
   def load_entity(entity)
     begin
       entity.find params[:id]
@@ -20,6 +29,7 @@ module ApiHelpers
 
   def create_entity(entity_class)
     entity = entity_class.new parse_request
+    entity.owner = get_authenticated_user
 
     halt 422, entity.errors.to_json unless entity.valid?
 
@@ -29,9 +39,11 @@ module ApiHelpers
   end
 
   def update_entity(entity_class)
+    user = get_authenticated_user
     entity = load_entity(entity_class)
-    request = parse_request
+    halt 401, {error: 'Authentication required.'}.to_json unless entity.owned_by?(user)
 
+    request = parse_request
     entity_class.attribute_set.each do |attr|
       entity[attr.name] = request[attr.name.to_s] unless request[attr.name.to_s].nil?
     end

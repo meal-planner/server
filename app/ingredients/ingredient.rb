@@ -1,7 +1,9 @@
 require 'elasticsearch/persistence/model'
+require_relative '../ownable'
 
 class Ingredient
   include Elasticsearch::Persistence::Model
+  include Ownable
 
   class Measure
     include Virtus.model
