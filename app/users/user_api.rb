@@ -50,9 +50,9 @@ class UserAPI < Sinatra::Base
   end
 
   get '/profile' do
-    user = get_authenticated_user
+    user = authenticated_user
 
-    {display_name: user.display_name, email: user.email, avatar: user.avatar}.to_json
+    {id: user.id, display_name: user.display_name, email: user.email, avatar: user.avatar}.to_json
   end
 
 end

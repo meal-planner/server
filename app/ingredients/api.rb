@@ -26,7 +26,7 @@ class IngredientAPI < Sinatra::Base
   end
 
   get '/:id' do
-    load_entity(Ingredient).to_json
+    get_entity(Ingredient).to_json
   end
 
   post '/' do
