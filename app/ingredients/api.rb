@@ -10,17 +10,12 @@ class IngredientAPI < Sinatra::Base
   get '/' do
     query = params[:query]
     if query
-      results = Ingredient.search query: {multi_match: {query: query, fields: %w(name^2 description)}}, sort: {generic: {order: 'desc'}}, size: 18
+      results = Ingredient.search query: {multi_match: {query: query, type: 'best_fields', fields: %w(name description)}}, size: 18
     else
       group = params[:group]
-      if group
-        query = {match: {group: group}}
-      else
-        query = {match_all: {}}
-      end
       from = params[:start] ? params[:start]: 0
       size = params[:size] ? params[:size] : 10
-      results = Ingredient.search query: query, sort: {generic: {order: 'desc'}, created_at: {order: 'desc'}}, from: from, size: size
+      results = Ingredient.search query: {filtered: {filter: {term: {group: group}}}}, from: from, size: size
     end
     results.to_json
   end
