@@ -8,16 +8,17 @@ class IngredientAPI < Sinatra::Base
   helpers ApiHelpers
 
   get '/' do
-    query = params[:query]
-    if query
-      results = Ingredient.search query: {match: {name: query}}, size: 18
-    else
-      group = params[:group]
-      from = params[:start] ? params[:start]: 0
-      size = params[:size] ? params[:size] : 10
-      results = Ingredient.search query: {filtered: {filter: {term: {group: group}}}}, from: from, size: size
-    end
-    results.to_json
+    query = {
+        query: {
+            filtered: {}
+        },
+        from: params[:start] || 0,
+        size: params[:size] || 12
+    }
+    query[:query][:filtered][:filter] = {term: {group: params[:group]}} if params[:group].present?
+    query[:query][:filtered][:query] = {match: {name: params[:query]}} if params[:query].present?
+
+    Ingredient.search(query).to_json
   end
 
   get '/:id' do
