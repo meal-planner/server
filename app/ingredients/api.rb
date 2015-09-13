@@ -10,7 +10,7 @@ class IngredientAPI < Sinatra::Base
   get '/' do
     query = params[:query]
     if query
-      results = Ingredient.search query: {multi_match: {query: query, type: 'best_fields', fields: %w(name description)}}, size: 18
+      results = Ingredient.search query: {match: {name: query}}, size: 18
     else
       group = params[:group]
       from = params[:start] ? params[:start]: 0

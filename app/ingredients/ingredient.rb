@@ -16,7 +16,6 @@ class Ingredient
 
   attribute :ndbno, String
   attribute :name, String
-  attribute :description, String
   attribute :group, String
   attribute :generic, Boolean, :default => false
   attribute :measures, Array[Measure]

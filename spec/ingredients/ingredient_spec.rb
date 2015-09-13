@@ -7,7 +7,6 @@ describe 'Ingredient Model' do
       json = {
           ndbno: 'foo',
           name: 'foo name',
-          description: 'foo description',
           group: 'foo group',
           generic: true,
           measures: [
@@ -27,7 +26,6 @@ describe 'Ingredient Model' do
       ingredient = Ingredient.new json
 
       expect(ingredient.name).to eq json[:name]
-      expect(ingredient.description).to eq json[:description]
       expect(ingredient.group).to eq json[:group]
       expect(ingredient.generic).to eq json[:generic]
       expect(ingredient.measures.length).to eq 1
