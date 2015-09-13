@@ -9,15 +9,19 @@ class RecipeAPI < Sinatra::Base
   helpers ApiHelpers
 
   get '/' do
-    query = params[:query]
-    if query
-      results = Recipe.search query: {match: {name: query}}, size: 18
-    else
-      filter_by = params[:filter_by]
-      filter_value = params[:filter_value]
-      results = Recipe.search query: {filtered: {filter: {term: {filter_by => filter_value}}}}, size: 6
+    query = {
+        query: {
+            filtered: {}
+        },
+        from: params[:start] || 0,
+        size: params[:size] || 12
+    }
+    if params[:filter_by].present?
+      query[:query][:filtered][:filter] = {term: {params[:filter_by] => params[:filter_value]}}
     end
-    results.to_json
+    query[:query][:filtered][:query] = {match: {name: params[:query]}} if params[:query].present?
+
+    Recipe.search(query).to_json
   end
 
   get '/:id' do
