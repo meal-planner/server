@@ -15,14 +15,7 @@ class RecipeAPI < Sinatra::Base
     else
       filter_by = params[:filter_by]
       filter_value = params[:filter_value]
-      if filter_by && filter_by.length > 0 && filter_value.length > 0
-        filter = {}
-        filter[filter_by] = filter_value
-        query = {match_phrase: filter}
-      else
-        query = {match_all: {}}
-      end
-      results = Recipe.search query: query, sort: {created_at: {order: 'desc'}}, size: 6
+      results = Recipe.search query: {filtered: {filter: {term: {filter_by => filter_value}}}}, size: 6
     end
     results.to_json
   end
