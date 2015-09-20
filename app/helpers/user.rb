@@ -41,6 +41,17 @@ module MealPlanner
         user
       end
 
+      def reset_user_password
+        request = parse_request
+        user = UserRepository.find_by_password_token(request[:token])
+        halt 401, {error: 'Invalid token'}.to_json unless user.present?
+
+        user.password = request[:new_password]
+        user.password_token = nil
+        UserRepository.update user
+        user
+      end
+
       def request_password_reset
         request = parse_request
         user = UserRepository.find_by_email(request[:email])

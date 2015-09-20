@@ -24,4 +24,9 @@ class UserAPI < Sinatra::Base
   post '/password_reset_request' do
     request_password_reset
   end
+
+  post '/reset_password' do
+    user = reset_user_password
+    respond_with_token user
+  end
 end
