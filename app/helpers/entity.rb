@@ -4,28 +4,20 @@ module MealPlanner
       def create_entity_in(repository)
         entity = repository.klass.new parse_request
         entity.owner = authenticated_user
-
-        validator = repository.validator.new
-        halt 422, validator.errors.to_json unless validator.valid?(entity)
-
+        validate_entity(repository, entity)
         repository.save entity
-        status 201
-        entity.to_json
+
+        halt 201, entity.to_json
       end
 
       def update_entity_in(repository)
-        user = authenticated_user
         entity = load_entity_from repository
-        halt 401, {error: 'Authentication required.'}.to_json unless entity.owned_by?(user)
+        halt 401, {error: 'Denied.'}.to_json unless entity.owned_by? authenticated_user
 
-        request = parse_request
-        repository.klass.attribute_set.each do |attr|
-          entity[attr.name] = request[attr.name] unless request[attr.name].nil?
-        end
-        validator = repository.validator.new
-        halt 422, validator.errors.to_json unless validator.valid?(entity)
-
+        entity.attributes = parse_request
+        validate_entity(repository, entity)
         repository.update entity
+
         status 200
       end
 
@@ -56,6 +48,11 @@ module MealPlanner
         rescue Elasticsearch::Persistence::Repository::DocumentNotFound
           halt 404, {error: 'Not Found'}.to_json
         end
+      end
+
+      def validate_entity(repository, entity)
+        validator = repository.validator.new
+        halt 422, validator.errors.to_json unless validator.valid?(entity)
       end
     end
   end
