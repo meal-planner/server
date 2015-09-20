@@ -1,22 +1,30 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
-gem 'json'
-gem 'elasticsearch-persistence'
-gem 'capistrano'
-gem 'capistrano-rvm'
-gem 'capistrano-bundler'
-gem 'unicorn'
+# basics
+gem 'require_all'
+gem 'sendgrid-ruby'
 gem 'newrelic_rpm'
-gem 'jwt'
-gem 'httpclient'
+gem 'sinatra'
 gem 'dotenv'
+gem 'json'
+# model and storage
+gem 'elasticsearch-persistence'
+gem 'veto'
+gem 'redis'
+gem 'bcrypt'
+# oauth clients
+gem 'jwt'
 gem 'koala'
 gem 'google-api-client', '0.9.pre3'
 gem 'twitter_oauth'
-gem 'bcrypt'
-gem 'redis'
-gem 'sendgrid-ruby'
+gem 'httpclient'
+
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'unicorn'
+end
 
 group :test do
   gem 'rspec', :require => 'spec'
