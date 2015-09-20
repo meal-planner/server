@@ -34,6 +34,7 @@ module Oauth
       )
       twitter = authorized_client.info
       @profile = Oauth::Profile.new
+      @profile.provider = :twitter
       @profile.provider_id = twitter['id']
       @profile.display_name = twitter['screen_name']
       @profile.email = twitter['email']

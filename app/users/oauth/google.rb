@@ -9,6 +9,7 @@ module Oauth
       plus = Google::Apis::PlusV1::PlusService.new
       google = plus.get_person('me', options: {authorization: authorization})
       @profile = Oauth::Profile.new
+      @profile.provider = :google
       @profile.provider_id = google.id
       @profile.display_name = google.display_name
       @profile.email = google.emails.first.value

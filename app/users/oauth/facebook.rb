@@ -9,6 +9,7 @@ module Oauth
       facebook = graph.get_object('me', {fields: 'id, name, email'})
       picture = graph.get_user_picture_data('me')
       @profile = Oauth::Profile.new
+      @profile.provider = :facebook
       @profile.provider_id = facebook['id']
       @profile.display_name = facebook['name']
       @profile.email = facebook['email']
