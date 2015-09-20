@@ -15,4 +15,9 @@ class UserAPI < Sinatra::Base
     user = create_user_in UserRepository
     respond_with_token user
   end
+
+  post '/login' do
+    user = authenticate_in UserRepository
+    respond_with_token user
+  end
 end

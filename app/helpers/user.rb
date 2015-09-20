@@ -28,6 +28,19 @@ module MealPlanner
         user
       end
 
+      # reset password token when successfully authenticated
+      def authenticate_in(repository)
+        request = parse_request
+
+        user = repository.find_by_email(request[:email])
+        authorized = user.present? && user.authenticate(request[:password])
+        halt 401, {error: 'Invalid email or password.'}.to_json unless authorized
+
+        user.password_token = nil
+        repository.update user
+        user
+      end
+
       def respond_with_token(user)
         halt 200, {token: Token.encode(user.id)}.to_json
       end
