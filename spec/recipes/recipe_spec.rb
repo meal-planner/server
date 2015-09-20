@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../../app/recipes/recipe'
+require_relative '../../meal_planner'
 
 describe 'Recipe Model' do
   context 'creating new model' do

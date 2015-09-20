@@ -1,9 +1,7 @@
-require 'elasticsearch/persistence/model'
-require_relative '../ownable'
-
 class Recipe
-  include Elasticsearch::Persistence::Model
-  include Ownable
+  include Virtus.model
+  include MealPlanner::Repository::Model
+  include MealPlanner::Repository::Model::CanBeOwned
 
   class Ingredient
     include Virtus.model
@@ -26,10 +24,4 @@ class Recipe
   attribute :cuisine, Array[String]
   attribute :key_ingredient, Array[String]
   attribute :diet, Array[String]
-
-  validates :name, presence: true
-  validates :time_to_cook, presence: true
-  validates :ingredients, presence: true
-  validates :nutrients, presence: true
-  validates :steps, presence: true
 end
