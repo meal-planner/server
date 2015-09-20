@@ -1,9 +1,6 @@
 class User
   include Virtus.model
   include MealPlanner::Repository::Model
-  include ActiveModel::SecurePassword
-
-  has_secure_password validations: false
 
   attribute :display_name, String
   attribute :email, String

@@ -13,7 +13,6 @@ require 'redis'
 require 'active_support/concern'
 require 'active_support/json'
 require 'active_support/core_ext/object/blank'
-require 'active_model/secure_password'
 # oauth clients
 require 'koala'
 require 'google/api_client/client_secrets'
