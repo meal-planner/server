@@ -1,6 +1,6 @@
 require_relative '../meal_planner'
 
-Dotenv.load '../config/.env'
+Dotenv.load '.env'
 
 map('/ingredients') { run IngredientAPI }
 map('/recipes') { run RecipeAPI }
