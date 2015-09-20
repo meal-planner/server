@@ -1,12 +1,9 @@
-require 'google/api_client/client_secrets'
-require 'google/apis/plus_v1'
-
 module Oauth
   class GoogleClient < Base
     def authorized?(params)
       client_secrets = Google::APIClient::ClientSecrets.load
       authorization = client_secrets.to_authorization
-      authorization.code = params['code']
+      authorization.code = params[:code]
       authorization.fetch_access_token!
 
       plus = Google::Apis::PlusV1::PlusService.new

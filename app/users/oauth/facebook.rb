@@ -1,10 +1,8 @@
-require 'koala'
-
 module Oauth
   class FacebookClient < Oauth::Base
     def authorized?(params)
-      oauth = Koala::Facebook::OAuth.new(params['clientId'], ENV['FACEBOOK_SECRET'], params['redirectUri'])
-      token = oauth.get_access_token(params['code'])
+      oauth = Koala::Facebook::OAuth.new(params[:clientId], ENV['FACEBOOK_SECRET'], params[:redirectUri])
+      token = oauth.get_access_token(params[:code])
       return false unless token
 
       graph = Koala::Facebook::API.new(token)

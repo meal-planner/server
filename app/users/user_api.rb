@@ -1,33 +1,35 @@
-require 'sinatra/base'
-require 'newrelic_rpm'
-require 'active_support/core_ext/hash'
-require_relative '../api_helpers'
-require_relative 'user'
-
 class UserAPI < Sinatra::Base
+  helpers MealPlanner::Helper::Request,
+          MealPlanner::Helper::User
 
-  helpers ApiHelpers
+  before do
+    content_type :json
+  end
 
   post '/signup' do
     request = parse_request
 
-    user = User.find_by_email(request['email'])
-    halt 400, {error: "Email #{request['email']} is already registered."}.to_json if user.present?
+    user = UserRepository.find_by_email(request[:email])
+    halt 400, {error: "Email #{request[:email]} is already registered."}.to_json if user.present?
 
-    user = User.new request.extract!(*%w{display_name email password})
-    halt 422, user.errors.to_json unless user.valid?
-    user.save
-    user.send_welcome_email
+    user = UserRepository.klass.new request.extract!(*%i{display_name email password})
+    validator = UserValidator.new
+    halt 422, validator.errors.to_json unless validator.valid?(user)
 
-    user.login! if user.id
+    UserRepository.save user
+    mailer = UserMailer.new user
+    mailer.send_welcome_email
+
+    halt 200, {token: Token.encode(user.id)}.to_json
   end
 
   post '/login' do
     request = parse_request
-
-    user = User.find_by_email(request['email'])
-    if user && user.authenticate(request['password'])
-      halt 200, user.login!
+    user = UserRepository.find_by_email(request[:email])
+    if user && user.authenticate(request[:password])
+      user.password_token = nil
+      UserRepository.update user
+      halt 200, {token: Token.encode(user.id)}.to_json
     else
       halt 401, {error: 'Invalid email or password.'}.to_json
     end
@@ -35,16 +37,23 @@ class UserAPI < Sinatra::Base
 
   post '/password_reset_request' do
     request = parse_request
-    user = User.find_by_email(request['email'])
-    user.send_password_reset unless user.blank?
+    user = UserRepository.find_by_email(request[:email])
+    unless user.blank?
+      user.password_token = SecureRandom.hex
+      UserRepository.update user
+      mailer = UserMailer.new user
+      mailer.send_password_reset_email
+    end
   end
 
   post '/reset_password' do
     request = parse_request
-    user = User.find_by_password_token(request['token'])
+    user = UserRepository.find_by_password_token(request[:token])
     if user
-      user.password = request['new_password']
-      halt 200, user.login!
+      user.password = request[:new_password]
+      user.password_token = nil
+      UserRepository.update user
+      halt 200, {token: Token.encode(user.id)}.to_json
     end
     halt 401, {error: 'Invalid token'}.to_json
   end
@@ -60,5 +69,4 @@ class UserAPI < Sinatra::Base
     }
     user_data.to_json
   end
-
 end

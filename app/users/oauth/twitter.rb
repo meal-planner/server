@@ -1,6 +1,3 @@
-require 'twitter_oauth'
-require 'redis'
-
 module TwitterOAuth
   class Client
     # Override TwitterOAuth gem method to get user email address.
@@ -25,9 +22,9 @@ module Oauth
 
     def authorized?(params)
       access_token = @client.authorize(
-          params['oauth_token'],
-          @redis.get(params['oauth_token']),
-          oauth_verifier: params['oauth_verifier']
+          params[:oauth_token],
+          @redis.get(params[:oauth_token]),
+          oauth_verifier: params[:oauth_verifier]
       )
       authorized_client = TwitterOAuth::Client.new(
           consumer_key: ENV['TWITTER_KEY'],

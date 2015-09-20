@@ -1,6 +1,3 @@
-require 'active_support/core_ext/object/blank'
-require 'jwt'
-
 class Token
   JWT_SECRET = ENV['JWT_SECRET']
   JWT_ALGORITHM = ENV['HS256']
