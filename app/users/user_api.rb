@@ -10,4 +10,9 @@ class UserAPI < Sinatra::Base
   get '/profile' do
     get_profile_data.to_json
   end
+
+  post '/signup' do
+    user = create_user_in UserRepository
+    respond_with_token user
+  end
 end

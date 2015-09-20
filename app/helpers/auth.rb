@@ -36,8 +36,7 @@ module MealPlanner
             user = UserRepository.klass.new
             user.email = profile.email
             user.password = SecureRandom.hex
-            mailer = UserMailer.new user
-            mailer.send_welcome_email
+            say_welcome_to user
           end
         end
         user.display_name = profile.display_name
