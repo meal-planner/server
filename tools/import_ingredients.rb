@@ -1,6 +1,4 @@
 require 'faraday'
-require 'json'
-require_relative 'ingredient'
 
 class Importer
   def initialize(api_key, update_existing: false, start_from: 0)
@@ -107,5 +105,5 @@ class Importer
   end
 end
 
-importer = Importer.new('cFgF6sRMTp8jmbE4zfJtuSFrtPnm4DYqnnOteXK6')
+importer = Importer.new(ENV['USDA_API_KEY'])
 importer.import_all

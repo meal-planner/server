@@ -1,9 +1,7 @@
-require 'elasticsearch/persistence/model'
-require_relative '../ownable'
-
 class Ingredient
-  include Elasticsearch::Persistence::Model
-  include Ownable
+  include Virtus.model
+  include MealPlanner::Repository::Model
+  include MealPlanner::Repository::Model::CanBeOwned
 
   class Measure
     include Virtus.model
@@ -19,7 +17,4 @@ class Ingredient
   attribute :group, String
   attribute :generic, Boolean, :default => false
   attribute :measures, Array[Measure]
-
-  validates :name, presence: true
-  validates :measures, presence: true
 end
