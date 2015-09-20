@@ -1,7 +1,7 @@
 class RecipeAPI < Sinatra::Base
   helpers MealPlanner::Helper::Request,
           MealPlanner::Helper::Entity,
-          MealPlanner::Helper::User
+          MealPlanner::Helper::Auth
 
   before do
     content_type :json
