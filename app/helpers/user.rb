@@ -25,6 +25,7 @@ module MealPlanner
 
         repository.save user
         say_welcome_to user
+
         user
       end
 
@@ -38,6 +39,7 @@ module MealPlanner
 
         user.password_token = nil
         repository.update user
+
         user
       end
 
@@ -49,6 +51,7 @@ module MealPlanner
         user.password = request[:new_password]
         user.password_token = nil
         UserRepository.update user
+
         user
       end
 

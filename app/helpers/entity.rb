@@ -24,7 +24,6 @@ module MealPlanner
       def get_entity_from(repository)
         entity = load_entity_from repository
         hash = entity.to_h
-        hash[:id] = entity.id
         hash[:can_edit] = entity.owned_by?(authenticated_user) if authenticated?
         hash.delete(:owner_id)
         hash

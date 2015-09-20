@@ -2,27 +2,25 @@ module MealPlanner
   module Helper
     module Auth
       def authenticated?
-        token = request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
-        token.present?
+        auth_token.present?
       end
 
       def authenticated_user
         begin
-          token = request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
-          UserRepository.find_by_auth_token(token)
+          UserRepository.find_by_auth_token(auth_token)
         rescue SecurityError
           halt 401, {error: 'Authentication required'}.to_json
         end
       end
 
-      # Sign in with given provider and request.
+      # Sign in with given OAuth provider and request.
       def sign_in(provider, request = nil)
         request ||= parse_request
         oauth = "Oauth::#{provider.capitalize}Client".constantize.new
         halt 401, {error: 'Authentication failed'}.to_json unless oauth.authorized?(request)
         user = oauth_to_user oauth.profile
-        UserRepository.persist user
-        halt 200, {token: Token.encode(user.id)}.to_json
+
+        respond_with_token user
       end
 
       private
@@ -34,16 +32,19 @@ module MealPlanner
           user = UserRepository.find_by_email(profile.email)
           if user.blank?
             user = UserRepository.klass.new
-            user.email = profile.email
             user.password = SecureRandom.hex
             say_welcome_to user
           end
         end
-        user.display_name = profile.display_name
-        user.avatar = profile.avatar
-        user[profile.provider] = profile.provider_id
+        user.attributes = profile.to_h.except(:provider)
         user.password_token = nil
+        UserRepository.persist user
+
         user
+      end
+
+      def auth_token
+        request.env['HTTP_AUTHORIZATION'].to_s.split(' ').last
       end
     end
   end

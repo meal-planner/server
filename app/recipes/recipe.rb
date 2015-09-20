@@ -15,8 +15,6 @@ class Recipe
   attribute :name, String
   attribute :time_to_cook, Integer
   attribute :servings, Integer
-  attribute :serving_size, Integer
-  attribute :serving_label, String
   attribute :ingredients, Array[Ingredient]
   attribute :nutrients, Hash[Symbol => Float]
   attribute :steps, Array[String]
