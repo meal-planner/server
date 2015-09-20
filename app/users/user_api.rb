@@ -12,7 +12,10 @@ class UserAPI < Sinatra::Base
     user = UserRepository.find_by_email(request[:email])
     halt 400, {error: "Email #{request[:email]} is already registered."}.to_json if user.present?
 
-    user = UserRepository.klass.new request.extract!(*%i{display_name email password})
+    user = UserRepository.klass.new
+    user.email = request[:email]
+    user.display_name = request[:display_name]
+    user.password = request[:password]
     validator = UserValidator.new
     halt 422, validator.errors.to_json unless validator.valid?(user)
 
