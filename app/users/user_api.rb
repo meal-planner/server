@@ -20,4 +20,8 @@ class UserAPI < Sinatra::Base
     user = authenticate_in UserRepository
     respond_with_token user
   end
+
+  post '/password_reset_request' do
+    request_password_reset
+  end
 end

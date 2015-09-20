@@ -41,6 +41,17 @@ module MealPlanner
         user
       end
 
+      def request_password_reset
+        request = parse_request
+        user = UserRepository.find_by_email(request[:email])
+        if user.present?
+          user.password_token = SecureRandom.hex
+          UserRepository.update user
+          mailer = UserMailer.new user
+          mailer.send_password_reset_email
+        end
+      end
+
       def respond_with_token(user)
         halt 200, {token: Token.encode(user.id)}.to_json
       end
