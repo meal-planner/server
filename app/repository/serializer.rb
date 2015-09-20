@@ -1,6 +1,8 @@
 module MealPlanner
   module Repository
-    module Store
+    # remove object id before indexing
+    # restore object id after getting from index
+    module Serializer
       def self.included(base)
         base.class_eval do
           def serialize(document)

@@ -1,18 +1,33 @@
 module MealPlanner
   module Repository
+    # adds ElasticSearch filtered query
+    # search query text and filter are optional
     module FilteredSearch
-      def filtered_search(text: nil, filter_by: nil, filter_value: nil, start: nil, size: nil)
+      def filtered_search(text: nil, filter_by: nil, filter_value: nil,
+                          start: nil, size: nil)
         query = {
-            query: {
-                filtered: {}
-            },
-            from: start || 0,
-            size: size || 12
+          query: { filtered: {} },
+          from: start || 0, size: size || 12
         }
-        query[:query][:filtered][:filter] = {term: {filter_by => filter_value}} if filter_value.present?
-        query[:query][:filtered][:query] = {match: {name: text}} if text.present?
-
+        filter_query(query, filter_by, filter_value)
+        text_query(query, text)
         search query
+      end
+
+      private
+
+      def filter_query(query, filter_by, filter_value)
+        return false if filter_value.present?
+        query[:query][:filtered][:filter] = {
+          term: { filter_by => filter_value }
+        }
+      end
+
+      def text_query(query, text)
+        return false if text.present?
+        query[:query][:filtered][:query] = {
+          match: { name: text }
+        }
       end
     end
   end

@@ -1,6 +1,6 @@
 class IngredientRepository
   include Elasticsearch::Persistence::Repository
-  include MealPlanner::Repository::Store
+  include MealPlanner::Repository::Serializer
   extend MealPlanner::Repository::Validator
   extend MealPlanner::Repository::FilteredSearch
 

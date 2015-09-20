@@ -1,6 +1,7 @@
 module MealPlanner
   module Repository
     module Model
+      # adds owner to the model
       module CanBeOwned
         include Virtus.module
 

@@ -1,7 +1,7 @@
 # User storage ElasticSearch repository
 class UserRepository
   include Elasticsearch::Persistence::Repository
-  include MealPlanner::Repository::Store
+  include MealPlanner::Repository::Serializer
   extend MealPlanner::Repository::TermQuery
 
   klass User
