@@ -37,15 +37,22 @@ module MealPlanner
       end
 
       def find_user_by(profile)
-        user = UserRepository.find_by_oauth(profile.provider, profile.provider_id)
+        user = UserRepository.find_by_oauth(
+          profile.provider,
+          profile.provider_id
+        )
         if user.blank?
           user = UserRepository.find_by_email(profile.email)
-          if user.blank?
-            user = UserRepository.klass.new
-            user.password = SecureRandom.hex
-            say_welcome_to user
-          end
+          user = create_new_user(profile.email) if user.blank?
         end
+        user
+      end
+
+      def create_new_user(email)
+        user = UserRepository.klass.new
+        user.password = SecureRandom.hex
+        user.email = email
+        say_welcome_to user
         user
       end
 

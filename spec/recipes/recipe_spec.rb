@@ -8,20 +8,20 @@ describe 'Recipe Model' do
         name: 'foo recipe',
         time_to_cook: 5,
         dish_type: 'Snacks',
-        cuisine: %w{American Italian'},
-        key_ingredient: %w{Beef Bread},
-        diet: %w{Vegetarian},
+        cuisine: %w(American Italian),
+        key_ingredient: %w(Beef Bread),
+        diet: %w(Vegetarian),
         ingredients: [
-            {
-                id: 'baz_id',
-                name: 'baz ingredient',
-                measure: 'g',
-                measure_amount: 100,
-                not_allowed_attr: 'should be filtered out'
-            }
+          {
+            id: 'baz_id',
+            name: 'baz ingredient',
+            measure: 'g',
+            measure_amount: 100,
+            not_allowed_attr: 'should be filtered out'
+          }
         ],
         nutrients: {
-            energy: 150
+          energy: 150
         }
       }
 
@@ -36,8 +36,12 @@ describe 'Recipe Model' do
       expect(recipe.ingredients.length).to eq 1
       expect(recipe.ingredients[0].id).to eq json[:ingredients][0][:id]
       expect(recipe.ingredients[0].name).to eq json[:ingredients][0][:name]
-      expect(recipe.ingredients[0].measure).to eq json[:ingredients][0][:measure]
-      expect(recipe.ingredients[0].measure_amount).to eq json[:ingredients][0][:measure_amount]
+      expect(recipe.ingredients[0].measure).to(
+        eq json[:ingredients][0][:measure]
+      )
+      expect(recipe.ingredients[0].measure_amount).to(
+        eq json[:ingredients][0][:measure_amount]
+      )
       expect(recipe.nutrients[:energy]).to eq json[:nutrients][:energy]
     end
   end

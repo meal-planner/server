@@ -20,7 +20,11 @@ describe 'Recipes REST API' do
     end
 
     it 'returns 404 if recipe not found' do
-      allow(RecipeRepository).to receive(:find).and_raise(Elasticsearch::Persistence::Repository::DocumentNotFound)
+      allow(RecipeRepository).to(
+        receive(:find).and_raise(
+          Elasticsearch::Persistence::Repository::DocumentNotFound
+        )
+      )
 
       put '/baz'
 
@@ -30,7 +34,7 @@ describe 'Recipes REST API' do
     it 'returns 422 error if required params are missing' do
       allow(RecipeRepository).to receive(:find).and_return(recipe)
 
-      put '/fooId', {foo: 'bar'}.to_json
+      put '/fooId', { foo: 'bar' }.to_json
 
       expect(last_response.status).to eq 422
       expect(last_response.body).to include 'name'
