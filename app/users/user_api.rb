@@ -1,3 +1,4 @@
+# /users API REST endpoint
 class UserAPI < Sinatra::Base
   helpers MealPlanner::Helper::Request,
           MealPlanner::Helper::User,

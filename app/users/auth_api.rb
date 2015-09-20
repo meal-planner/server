@@ -1,3 +1,5 @@
+# /auth API REST endpoint
+# used for OAuth authentication
 class AuthAPI < Sinatra::Base
   helpers MealPlanner::Helper::Request,
           MealPlanner::Helper::User,
@@ -21,7 +23,8 @@ class AuthAPI < Sinatra::Base
 
     if oauth_token.blank?
       client = Oauth::TwitterClient.new
-      halt 200, {oauth_token: client.get_request_token(request[:redirectUri])}.to_json
+      token = { oauth_token: client.get_request_token(request[:redirectUri]) }
+      halt 200, token.to_json
     elsif oauth_token && request[:oauth_verifier]
       sign_in(:twitter, request)
     end

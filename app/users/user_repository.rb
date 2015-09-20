@@ -1,3 +1,4 @@
+# User storage ElasticSearch repository
 class UserRepository
   include Elasticsearch::Persistence::Repository
   include MealPlanner::Repository::Store
@@ -9,7 +10,6 @@ class UserRepository
   type :user
 
   class << self
-
     def find_by_email(email)
       term_query(:email, email).first.presence
     end
@@ -24,7 +24,7 @@ class UserRepository
 
     def find_by_auth_token(token)
       payload = Token.new(token)
-      raise SecurityError, 'Token invalid.' unless payload.valid?
+      fail SecurityError, 'Token invalid.' unless payload.valid?
 
       find(payload.user_id)
     end
@@ -37,6 +37,5 @@ class UserRepository
         document.id = result['_id']
       end
     end
-
   end
 end

@@ -1,4 +1,8 @@
 module Oauth
+  # OAuth profile entity
+  # created from OAuth providers response (Facebook, Google etc)
+  # and provides unified interface to user profile data
+  # from various providers
   class Profile
     include Virtus.model
 

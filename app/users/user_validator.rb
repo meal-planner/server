@@ -1,3 +1,4 @@
+# User attributes validator
 class UserValidator
   include Veto.validator
 

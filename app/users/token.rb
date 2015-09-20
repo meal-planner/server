@@ -1,3 +1,4 @@
+# JSON Web Token, used for user authentication
 class Token
   JWT_SECRET = ENV['JWT_SECRET']
   JWT_ALGORITHM = ENV['HS256']
@@ -16,7 +17,13 @@ class Token
   end
 
   def self.encode(user_id)
-    JWT.encode({user_id: user_id, exp: (DateTime.now + 30).to_i}, JWT_SECRET, JWT_ALGORITHM)
+    JWT.encode(
+      {
+        user_id: user_id,
+        exp: (DateTime.now + 30).to_i
+      },
+      JWT_SECRET,
+      JWT_ALGORITHM
+    )
   end
-
 end

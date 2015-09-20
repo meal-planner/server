@@ -1,3 +1,4 @@
+# User entity
 class User
   include Virtus.model
   include MealPlanner::Repository::Model
