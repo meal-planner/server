@@ -6,4 +6,8 @@ class UserAPI < Sinatra::Base
   before do
     content_type :json
   end
+
+  get '/profile' do
+    get_profile_data.to_json
+  end
 end
