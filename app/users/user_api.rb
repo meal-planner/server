@@ -9,7 +9,7 @@ class UserAPI < Sinatra::Base
   end
 
   get '/profile' do
-    get_profile_data.to_json
+    profile_data.to_json
   end
 
   post '/signup' do

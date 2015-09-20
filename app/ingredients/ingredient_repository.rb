@@ -1,3 +1,4 @@
+# Ingredient storage ElasticSearch repository
 class IngredientRepository
   include Elasticsearch::Persistence::Repository
   include MealPlanner::Repository::Serializer
@@ -8,5 +9,5 @@ class IngredientRepository
   validator IngredientValidator
 
   index :ingredients
-  type  :ingredient
+  type :ingredient
 end

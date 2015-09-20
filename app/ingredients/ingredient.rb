@@ -1,8 +1,9 @@
+# Ingredient entity
 class Ingredient
   include Virtus.model
   include MealPlanner::Repository::Model
   include MealPlanner::Repository::Model::CanBeOwned
-
+  # Ingredient measure entity
   class Measure
     include Virtus.model
 
@@ -15,6 +16,6 @@ class Ingredient
   attribute :ndbno, String
   attribute :name, String
   attribute :group, String
-  attribute :generic, Boolean, :default => false
+  attribute :generic, Boolean, default: false
   attribute :measures, Array[Measure]
 end

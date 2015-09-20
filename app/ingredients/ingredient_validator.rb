@@ -1,3 +1,4 @@
+# Ingredient attributes validator
 class IngredientValidator
   include Veto.validator
 

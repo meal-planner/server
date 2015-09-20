@@ -1,5 +1,6 @@
 module MealPlanner
   module Helper
+    # Entity (Ingredient & Recipe) API helper
     module Entity
       def create_entity_in(repository)
         entity = repository.klass.new parse_request
@@ -12,7 +13,9 @@ module MealPlanner
 
       def update_entity_in(repository)
         entity = load_entity_from repository
-        halt 401, {error: 'Denied.'}.to_json unless entity.owned_by? authenticated_user
+        unless entity.owned_by? authenticated_user
+          halt 401, { error: 'Denied.' }.to_json
+        end
 
         entity.attributes = parse_request
         validate_entity(repository, entity)
@@ -31,22 +34,20 @@ module MealPlanner
 
       def search_entities_in(repository)
         repository.filtered_search(
-            text: params[:query],
-            filter_by: params[:filter_by],
-            filter_value: params[:filter_value],
-            start: params[:start],
-            size: params[:size]
+          text: params[:query],
+          filter_by: params[:filter_by],
+          filter_value: params[:filter_value],
+          start: params[:start],
+          size: params[:size]
         )
       end
 
       private
 
       def load_entity_from(repository)
-        begin
-          repository.find params[:id]
-        rescue Elasticsearch::Persistence::Repository::DocumentNotFound
-          halt 404, {error: 'Not Found'}.to_json
-        end
+        repository.find params[:id]
+      rescue Elasticsearch::Persistence::Repository::DocumentNotFound
+        halt 404, { error: 'Not Found' }.to_json
       end
 
       def validate_entity(repository, entity)
