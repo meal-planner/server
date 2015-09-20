@@ -5,8 +5,8 @@ module MealPlanner
       def self.included(base)
         base.class_eval do
           attribute :id, String
-          attribute :created_at, DateTime, default: -> { Time.now.utc }
-          attribute :updated_at, DateTime, default: -> { Time.now.utc }
+          attribute :created_at, DateTime, default: ->(_, _) { Time.now.utc }
+          attribute :updated_at, DateTime, default: ->(_, _) { Time.now.utc }
         end
       end
     end

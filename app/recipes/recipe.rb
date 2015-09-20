@@ -1,8 +1,9 @@
+# Recipe entity
 class Recipe
   include Virtus.model
   include MealPlanner::Repository::Model
   include MealPlanner::Repository::Model::CanBeOwned
-
+  # Recipe ingredient entity
   class Ingredient
     include Virtus.model
 

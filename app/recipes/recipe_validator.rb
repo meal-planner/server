@@ -1,3 +1,4 @@
+# Recipe attributes validator
 class RecipeValidator
   include Veto.validator
 

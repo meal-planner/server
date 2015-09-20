@@ -1,3 +1,4 @@
+# /recipes API REST endpoint
 class RecipeAPI < Sinatra::Base
   helpers MealPlanner::Helper::Request,
           MealPlanner::Helper::Entity,

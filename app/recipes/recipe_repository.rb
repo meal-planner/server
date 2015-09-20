@@ -1,3 +1,4 @@
+# Recipe storage ElasticSearch repository
 class RecipeRepository
   include Elasticsearch::Persistence::Repository
   include MealPlanner::Repository::Serializer
@@ -8,5 +9,5 @@ class RecipeRepository
   validator RecipeValidator
 
   index :recipes
-  type  :recipe
+  type :recipe
 end
