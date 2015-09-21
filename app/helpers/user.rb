@@ -57,7 +57,7 @@ module MealPlanner
       def request_password_reset
         request = parse_request
         user = UserRepository.find_by_email(request[:email])
-        return false if user.present?
+        return false unless user.present?
         user.password_token = SecureRandom.hex
         UserRepository.update user
         mailer = UserMailer.new user
