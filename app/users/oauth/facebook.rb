@@ -8,7 +8,7 @@ module Oauth
         params[:redirectUri]
       )
       token = oauth.get_access_token(params[:code])
-      return false unless token
+      return unless token
 
       @graph = Koala::Facebook::API.new(token)
       facebook = @graph.get_object('me', fields: 'id, name, email')

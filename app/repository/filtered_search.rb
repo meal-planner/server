@@ -17,14 +17,14 @@ module MealPlanner
       private
 
       def filter_query(query, filter_by, filter_value)
-        return false if filter_value.present?
+        return unless filter_value.present?
         query[:query][:filtered][:filter] = {
           term: { filter_by => filter_value }
         }
       end
 
       def text_query(query, text)
-        return false if text.present?
+        return unless text.present?
         query[:query][:filtered][:query] = {
           match: { name: text }
         }

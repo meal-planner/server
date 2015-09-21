@@ -57,7 +57,7 @@ module MealPlanner
       def request_password_reset
         request = parse_request
         user = UserRepository.find_by_email(request[:email])
-        return false unless user.present?
+        return unless user.present?
         user.password_token = SecureRandom.hex
         UserRepository.update user
         mailer = UserMailer.new user
@@ -76,7 +76,7 @@ module MealPlanner
       private
 
       def validate_unique_user(repository, email)
-        return true unless repository.find_by_email(email).present?
+        return unless repository.find_by_email(email).present?
         halt 400, { error: "Email #{email} is already registered." }.to_json
       end
     end
