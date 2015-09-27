@@ -12,6 +12,8 @@ gem 'elasticsearch-persistence'
 gem 'veto'
 gem 'redis'
 gem 'bcrypt'
+gem 'data_uri'
+gem 'aws-sdk'
 # oauth clients
 gem 'jwt'
 gem 'koala'
