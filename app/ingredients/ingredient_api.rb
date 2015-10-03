@@ -9,6 +9,10 @@ class IngredientAPI < Sinatra::Base
   end
 
   get '/' do
+    @params[:sort] = [
+      { generic: { order: 'desc' } },
+      { _score: { order: 'desc' } }
+    ]
     search_entities_in(IngredientRepository).to_json
   end
 

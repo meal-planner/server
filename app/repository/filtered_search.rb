@@ -4,10 +4,10 @@ module MealPlanner
     # search query text and filter are optional
     module FilteredSearch
       def filtered_search(text: nil, filter_by: nil, filter_value: nil,
-                          start: nil, size: nil)
+                          start: nil, size: nil, sort: nil)
         query = {
           query: { filtered: {} },
-          from: start || 0, size: size || 12
+          from: start || 0, size: size || 12, sort: sort || []
         }
         filter_query(query, filter_by, filter_value)
         text_query(query, text)

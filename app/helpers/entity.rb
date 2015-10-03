@@ -38,7 +38,8 @@ module MealPlanner
           filter_by: params[:filter_by],
           filter_value: params[:filter_value],
           start: params[:start],
-          size: params[:size]
+          size: params[:size],
+          sort: params[:sort]
         )
       end
 
