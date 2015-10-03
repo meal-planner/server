@@ -3,6 +3,7 @@ class Recipe
   include Virtus.model
   include MealPlanner::Repository::Model
   include MealPlanner::Repository::Model::CanBeOwned
+  include MealPlanner::Repository::Model::HasImage
   # Recipe ingredient entity
   class Ingredient
     include Virtus.model
