@@ -35,7 +35,6 @@ describe 'Recipe Model' do
       expect(recipe.diet).to eq json[:diet]
       expect(recipe.ingredients.length).to eq 1
       expect(recipe.ingredients[0].id).to eq json[:ingredients][0][:id]
-      expect(recipe.ingredients[0].name).to eq json[:ingredients][0][:name]
       expect(recipe.ingredients[0].measure).to(
         eq json[:ingredients][0][:measure]
       )
