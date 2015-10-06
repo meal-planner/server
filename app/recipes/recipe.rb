@@ -9,8 +9,6 @@ class Recipe
     include Virtus.model
 
     attribute :id, String
-    attribute :name, String
-    attribute :image_url, String
     attribute :measure, String
     attribute :measure_amount, Float
   end
