@@ -13,10 +13,7 @@ class RecipeAPI < Sinatra::Base
   end
 
   get '/:id' do
-    recipe = get_entity_from(RecipeRepository)
-    ingredient_ids = recipe[:ingredients].map { |ingredient| ingredient.id }
-    recipe[:ingredients] = IngredientRepository.find_by_ids ingredient_ids
-    recipe.to_json
+    get_entity_from(RecipeRepository).to_json
   end
 
   post '/' do
