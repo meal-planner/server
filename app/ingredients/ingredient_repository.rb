@@ -10,4 +10,8 @@ class IngredientRepository
 
   index :ingredients
   type :ingredient
+
+  def self.find_by_ids(ids)
+    search({ query: { ids: { values: ids } } })
+  end
 end
