@@ -3,6 +3,7 @@ class UserRepository
   include Elasticsearch::Persistence::Repository
   include MealPlanner::Repository::Serializer
   extend MealPlanner::Repository::TermQuery
+  extend MealPlanner::Repository::Persist
 
   klass User
 
@@ -27,15 +28,6 @@ class UserRepository
       fail SecurityError, 'Token invalid.' unless payload.valid?
 
       find(payload.user_id)
-    end
-
-    def persist(document)
-      if document.id
-        update document
-      else
-        result = save document
-        document.id = result['_id']
-      end
     end
   end
 end

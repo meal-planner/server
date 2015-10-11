@@ -6,9 +6,9 @@ module MealPlanner
         entity = repository.klass.new parse_request
         entity.owner = authenticated_user
         validate_entity(repository, entity)
-        repository.save entity
+        repository.persist entity
 
-        halt 201, entity.to_json
+        halt 201, {id: entity.id}.to_json
       end
 
       def update_entity_in(repository)
@@ -19,9 +19,9 @@ module MealPlanner
 
         entity.attributes = parse_request
         validate_entity(repository, entity)
-        repository.update entity
+        repository.persist entity
 
-        status 200
+        halt 200, {id: entity.id}.to_json
       end
 
       def get_entity_from(repository)

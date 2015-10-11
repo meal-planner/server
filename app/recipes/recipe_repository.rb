@@ -4,6 +4,7 @@ class RecipeRepository
   include MealPlanner::Repository::Serializer
   extend MealPlanner::Repository::Validator
   extend MealPlanner::Repository::FilteredSearch
+  extend MealPlanner::Repository::Persist
 
   klass Recipe
   validator RecipeValidator
