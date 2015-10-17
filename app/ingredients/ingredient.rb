@@ -14,6 +14,7 @@ class Ingredient
     attribute :nutrients, Hash[Symbol => Float]
   end
 
+  attribute :forked_from, String
   attribute :ndbno, String
   attribute :name, String
   attribute :group, String
