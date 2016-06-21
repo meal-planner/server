@@ -9,6 +9,7 @@ describe 'Ingredient Model' do
         name: 'foo name',
         group: 'foo group',
         generic: true,
+        ready_to_eat: true,
         measures: [
           {
             qty: 100,
@@ -28,6 +29,7 @@ describe 'Ingredient Model' do
       expect(ingredient.name).to eq json[:name]
       expect(ingredient.group).to eq json[:group]
       expect(ingredient.generic).to eq json[:generic]
+      expect(ingredient.ready_to_eat).to eq json[:ready_to_eat]
       expect(ingredient.measures.length).to eq 1
       expect(ingredient.measures[0].qty).to eq json[:measures][0][:qty]
       expect(ingredient.measures[0].eqv).to eq json[:measures][0][:eqv]

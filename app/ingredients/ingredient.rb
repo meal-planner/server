@@ -20,4 +20,5 @@ class Ingredient
   attribute :group, String
   attribute :generic, Boolean, default: false
   attribute :measures, Array[Measure]
+  attribute :ready_to_eat, Boolean, default: false
 end
