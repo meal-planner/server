@@ -17,6 +17,7 @@ describe 'Recipe Model' do
             name: 'baz ingredient',
             measure: 'g',
             measure_amount: 100,
+            position: 5,
             not_allowed_attr: 'should be filtered out'
           }
         ],
@@ -40,6 +41,9 @@ describe 'Recipe Model' do
       )
       expect(recipe.ingredients[0].measure_amount).to(
         eq json[:ingredients][0][:measure_amount]
+      )
+      expect(recipe.ingredients[0].position).to(
+        eq json[:ingredients][0][:position]
       )
       expect(recipe.nutrients[:energy]).to eq json[:nutrients][:energy]
     end

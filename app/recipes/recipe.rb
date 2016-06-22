@@ -11,6 +11,7 @@ class Recipe
     attribute :id, String
     attribute :measure, String
     attribute :measure_amount, Float
+    attribute :position, Integer
   end
 
   attribute :name, String
