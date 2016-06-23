@@ -2,7 +2,7 @@
 # ======================
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
-server 'api.meal-planner.org', user: 'deployer', roles: %w{app}
+server '46.101.244.69', user: 'deployer', roles: %w{app}
 
 # Configuration
 # =============
