@@ -17,7 +17,11 @@ class IngredientAPI < Sinatra::Base
   end
 
   get '/:id' do
-    get_entity_from(IngredientRepository).to_json
+    if params[:id].include?(",")
+      IngredientRepository.find_by_ids(params[:id].split(",")).to_json
+    else
+      get_entity_from(IngredientRepository).to_json
+    end
   end
 
   post '/' do
