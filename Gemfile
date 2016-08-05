@@ -17,7 +17,7 @@ gem 'aws-sdk'
 # oauth clients
 gem 'jwt'
 gem 'koala'
-gem 'google-api-client', '0.9.pre3'
+gem 'google-api-client'
 gem 'twitter_oauth'
 gem 'httpclient'
 
