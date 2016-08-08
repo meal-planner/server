@@ -7,7 +7,7 @@ class IngredientAPI < Sinatra::Base
   before do
     content_type :json
     params.each do |key, value|
-      params[key] = nil if value.empty?
+      params[key] = nil if value && value.empty?
     end
   end
 
