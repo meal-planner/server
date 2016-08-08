@@ -29,8 +29,12 @@ module.exports = function (grunt) {
 
     grunt.registerTask('deploy-doc', [
         'apidoc',
+        'cname',
         'buildcontrol:github'
     ]);
+    grunt.registerTask('cname', 'Creates CNAME file', function() {
+        grunt.file.write('_doc/CNAME', 'https://docs.meal-planner.org');
+    });
 
     grunt.loadNpmTasks('grunt-apidoc');
     grunt.loadNpmTasks('grunt-build-control');
