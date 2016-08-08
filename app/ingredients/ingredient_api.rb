@@ -8,6 +8,23 @@ class IngredientAPI < Sinatra::Base
     content_type :json
   end
 
+=begin
+@api {get} /ingredients Ingredients List
+@apiVersion 0.1.0
+@apiName IngredientsList
+@apiGroup Ingredients
+@apiDescription Ingredients list can be used to retrieve a list of all ingredients,
+filtered ingredients or to perform full text search on the ingredients.
+
+@apiParam {String} query Full text search query
+@apiParam {String} filter_by Filter attribute name
+@apiParam {String} filter_value Filter value
+@apiParam {Number} start Initial offset
+@apiParam {Number} size Number of entities to return, default is 12
+@apiParam {String} sort Sort by attribute name
+
+@apiSuccess {Object[]} items List of ingredients
+=end
   get '/' do
     @params[:sort] = [
       { generic: { order: 'desc' } },
