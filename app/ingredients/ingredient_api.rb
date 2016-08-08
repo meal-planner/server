@@ -12,21 +12,40 @@ class IngredientAPI < Sinatra::Base
   end
 
 =begin
-@api {get} /ingredients Ingredients List
+@api {get} /ingredients List
 @apiVersion 0.1.0
 @apiName IngredientsList
 @apiGroup Ingredients
-@apiDescription Ingredients list can be used to retrieve a list of all ingredients,
+@apiDescription
+Ingredients list can be used to retrieve a list of all ingredients,
 filtered ingredients or to perform full text search on the ingredients.
 
-@apiParam {String} query Full text search query
-@apiParam {String} filter_by Filter attribute name
-@apiParam {String} filter_value Filter value
-@apiParam {Number} start Initial offset
-@apiParam {Number} size Number of entities to return, default is 12
-@apiParam {String} sort Sort by attribute name
+For example, to retrieve list of all vegetables, use `filter_by: group` and `filter_value: Vegetables`
 
-@apiSuccess {Object[]} items List of ingredients
+@apiExample {curl} Example usage:
+curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group&filter_value=Vegetables"
+
+@apiParam {String} query         Full text search query
+@apiParam {String} filter_by     Filter attribute name (`group`, `owner_id`, `generic`, `ready_to_eat`)
+@apiParam {String} filter_value  Filter value
+@apiParam {Number} start         Initial offset
+@apiParam {Number} size          Number of items to return, default is `12`
+@apiParam {String} sort          Sort by attribute name
+
+@apiSuccess {Number}   total                     Total number of ingredients matching the query
+@apiSuccess {Object[]} items                     List of ingredients
+@apiSuccess {String}   items.name                Ingredient name
+@apiSuccess {String}   items.group               Ingredient group (Fruits, Vegetables, Grains, etc)
+@apiSuccess {Number}   items.ndbno               Ingredient USDA database number
+@apiSuccess {Boolean}  items.generic             Is ingredient generic?
+@apiSuccess {String}   items.forked_from         Parent ingredient ID, if it was forked
+@apiSuccess {Boolean}  items.ready_to_eat        Is ingredient ready to be eaten without cooking?
+@apiSuccess {Object[]} items.measures            List of ingredient measures
+@apiSuccess {Number}   items.measures.qty        Measure quantity
+@apiSuccess {Number}   items.measures.eqv        Measure equivalent in grams
+@apiSuccess {String}   items.measures.label      Measure label
+@apiSuccess {Hash[]}   items.measures.nutrients  Hash of nutrients values for this measure
+
 =end
   get '/' do
     @params[:sort] = [
