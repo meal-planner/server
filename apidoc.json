@@ -1,0 +1,8 @@
+{
+  "name": "Meal Planner API",
+  "version": "0.1.0",
+  "description": "RESTful backend for recipe recommendation and nutrition balancing service meal-planner.org",
+  "title": "Meal Planner API Documentation",
+  "url": "https://api.meal-planner.org",
+  "sampleUrl": "https://api.meal-planner.org"
+}

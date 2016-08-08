@@ -2,3 +2,5 @@
 .idea
 config/.env
 config/client_secrets.json
+_doc
+node_modules
