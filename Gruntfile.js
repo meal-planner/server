@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         },
         buildcontrol: {
             options: {
-                dir: '_site',
+                dir: '_doc',
                 commit: true,
                 push: true,
                 message: 'Built Meal Planner API docs from commit %sourceCommit% on branch %sourceBranch%'
@@ -27,7 +27,7 @@ module.exports = function (grunt) {
         },
     });
 
-    grunt.registerTask('deploy', [
+    grunt.registerTask('deploy-doc', [
         'apidoc',
         'buildcontrol:github'
     ]);
