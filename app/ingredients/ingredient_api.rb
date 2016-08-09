@@ -31,7 +31,7 @@ class IngredientAPI < Sinatra::Base
   curl -i "https://api.meal-planner.org/ingredients?filter_by=id&filter_value=AUwT3jHzWDuaurhTN27e,AUwUkOBnWDuaurhTN3hr"
 
   @apiParam {String} [query]         Full text search query
-  @apiParam {String} [filter_by]     Filter attribute name (`id`,`group`, `owner_id`, `generic`, `ready_to_eat`)
+  @apiParam {String = 'id','group','owner_id','generic','ready_to_eat'} [filter_by] Filter attribute name
   @apiParam {String} [filter_value]  Filter value
   @apiParam {Number} [start]         Initial offset
   @apiParam {Number} [size=12]       Number of items to return
@@ -69,7 +69,7 @@ class IngredientAPI < Sinatra::Base
   end
 
 =begin
-  @api {get} /ingredients/:id Get Ingredient information
+  @api {get} /ingredients/:id Get ingredient information
   @apiVersion 0.1.0
   @apiName IngredientsItem
   @apiGroup Ingredients
@@ -159,7 +159,7 @@ class IngredientAPI < Sinatra::Base
   @apiParam {Hash[]}   [measures.nutrients]  Hash of nutrients values for this measure
 
   @apiError (Error 400) InvalidRequest          Request payload is missing or could not be parsed
-  @apiError (Error 401) AuthenticationRequired  Request was made without authentication ow not by owner
+  @apiError (Error 401) AuthenticationRequired  Request was made without authentication or not by ingredient owner
   @apiError (Error 404) NotFound                Ingredient with given ID was not found
 
   @apiSuccess (Success 200) {String} id Unique ID of updated ingredient
