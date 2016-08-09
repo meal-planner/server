@@ -8,20 +8,20 @@ module MealPlanner
         validate_entity(repository, entity)
         repository.persist entity
 
-        halt 201, {id: entity.id}.to_json
+        halt 201, {id: entity.id}
       end
 
       def update_entity_in(repository)
         entity = load_entity_from repository
         unless entity.owned_by? authenticated_user
-          halt 401, { error: 'Denied.' }.to_json
+          halt 401, { error: 'Denied.' }
         end
 
         entity.attributes = parse_request
         validate_entity(repository, entity)
         repository.persist entity
 
-        halt 200, {id: entity.id}.to_json
+        halt 200, {id: entity.id}
       end
 
       def get_entity_from(repository)
@@ -48,12 +48,12 @@ module MealPlanner
       def load_entity_from(repository)
         repository.find params[:id]
       rescue Elasticsearch::Persistence::Repository::DocumentNotFound
-        halt 404, { error: 'Not Found' }.to_json
+        halt 404, { error: 'Not Found' }
       end
 
       def validate_entity(repository, entity)
         validator = repository.validator.new
-        halt 422, validator.errors.to_json unless validator.valid?(entity)
+        halt 422, validator.errors unless validator.valid?(entity)
       end
     end
   end

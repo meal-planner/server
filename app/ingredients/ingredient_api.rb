@@ -11,6 +11,10 @@ class IngredientAPI < Sinatra::Base
     end
   end
 
+  after do
+    response.body = response.body.to_json
+  end
+
 =begin
 @api {get} /ingredients List
 @apiVersion 0.1.0
@@ -34,10 +38,15 @@ curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group
 
 @apiSuccess {Number}   total                     Total number of ingredients matching the query
 @apiSuccess {Object[]} items                     List of ingredients
+@apiSuccess {String}   items.id                  Ingredient unique ID
 @apiSuccess {String}   items.name                Ingredient name
 @apiSuccess {String}   items.group               Ingredient group (Fruits, Vegetables, Grains, etc)
 @apiSuccess {Number}   items.ndbno               Ingredient USDA database number
 @apiSuccess {Boolean}  items.generic             Is ingredient generic?
+@apiSuccess {String}   items.owner_id            Ingredient owner unique ID
+@apiSuccess {String}   items.image_url           Ingredient image URL (relative to content origin)
+@apiSuccess {Date}     items.created_at          Date when ingredient was created
+@apiSuccess {Date}     items.updated_at          Date when ingredient was updated last time
 @apiSuccess {String}   items.forked_from         Parent ingredient ID, if it was forked
 @apiSuccess {Boolean}  items.ready_to_eat        Is ingredient ready to be eaten without cooking?
 @apiSuccess {Object[]} items.measures            List of ingredient measures
@@ -52,22 +61,26 @@ curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group
       { generic: { order: 'desc' } },
       { _score: { order: 'desc' } }
     ]
-    search_entities_in(IngredientRepository).to_json
+    result = search_entities_in(IngredientRepository)
+    {
+      total: result.response.hits.total,
+      items: result.to_a
+    }
   end
 
   get '/:id' do
     if params[:id].include?(",")
-      IngredientRepository.find_by_ids(params[:id].split(",")).to_json
+      IngredientRepository.find_by_ids(params[:id].split(","))
     else
-      get_entity_from(IngredientRepository).to_json
+      get_entity_from(IngredientRepository)
     end
   end
 
   post '/' do
-    create_entity_in IngredientRepository
+    create_entity_in(IngredientRepository)
   end
 
   put '/:id' do
-    update_entity_in IngredientRepository
+    update_entity_in(IngredientRepository)
   end
 end

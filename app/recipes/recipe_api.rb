@@ -8,19 +8,27 @@ class RecipeAPI < Sinatra::Base
     content_type :json
   end
 
+  after do
+    response.body = response.body.to_json
+  end
+
   get '/' do
-    search_entities_in(RecipeRepository).to_json
+    result = search_entities_in(RecipeRepository)
+    {
+      total: result.response.hits.total,
+      items: result.to_a
+    }
   end
 
   get '/:id' do
-    get_entity_from(RecipeRepository).to_json
+    get_entity_from(RecipeRepository)
   end
 
   post '/' do
-    create_entity_in RecipeRepository
+    create_entity_in(RecipeRepository)
   end
 
   put '/:id' do
-    update_entity_in RecipeRepository
+    update_entity_in(RecipeRepository)
   end
 end
