@@ -24,13 +24,16 @@ class IngredientAPI < Sinatra::Base
 Ingredients list can be used to retrieve a list of all ingredients,
 filtered ingredients or to perform full text search on the ingredients.
 
-For example, to retrieve list of all vegetables, use `filter_by: group` and `filter_value: Vegetables`
+For example, to retrieve list of all vegetables, use `filter_by: group` and `filter_value: Vegetables`.
 
-@apiExample {curl} Example usage:
+@apiExample {curl} Search in specific group:
 curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group&filter_value=Vegetables"
 
+@apiExample {curl} Multiple ingredients by ID:
+curl -i "https://api.meal-planner.org/ingredients?filter_by=id&filter_value=AUwT3jHzWDuaurhTN27e,AUwUkOBnWDuaurhTN3hr"
+
 @apiParam {String} query         Full text search query
-@apiParam {String} filter_by     Filter attribute name (`group`, `owner_id`, `generic`, `ready_to_eat`)
+@apiParam {String} filter_by     Filter attribute name (`id`,`group`, `owner_id`, `generic`, `ready_to_eat`)
 @apiParam {String} filter_value  Filter value
 @apiParam {Number} start         Initial offset
 @apiParam {Number} size          Number of items to return, default is `12`
@@ -57,11 +60,11 @@ curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group
 
 =end
   get '/' do
-    @params[:sort] = [
+    params[:sort] = [
       { generic: { order: 'desc' } },
       { _score: { order: 'desc' } }
     ]
-    result = search_entities_in(IngredientRepository)
+    result = search
     {
       total: result.response.hits.total,
       items: result.to_a
@@ -69,11 +72,7 @@ curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group
   end
 
   get '/:id' do
-    if params[:id].include?(",")
-      IngredientRepository.find_by_ids(params[:id].split(","))
-    else
-      get_entity_from(IngredientRepository)
-    end
+    get_entity_from(IngredientRepository)
   end
 
   post '/' do
@@ -82,5 +81,14 @@ curl -i "https://api.meal-planner.org/ingredients?query=tomatoes&filter_by=group
 
   put '/:id' do
     update_entity_in(IngredientRepository)
+  end
+
+  private
+  def search
+    if params[:filter_by] == 'id'
+      return IngredientRepository.find_by_ids(params[:filter_value].split(","))
+    end
+
+    search_entities_in(IngredientRepository)
   end
 end
