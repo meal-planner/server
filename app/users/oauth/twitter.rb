@@ -13,9 +13,9 @@ module Oauth
   # and redis to persist request token secret
   class TwitterClient < Oauth::Base
     def initialize
-      @redis = Redis.new
+      @redis  = Redis.new
       @client = TwitterOAuth::Client.new(
-        consumer_key: ENV['TWITTER_KEY'],
+        consumer_key:    ENV['TWITTER_KEY'],
         consumer_secret: ENV['TWITTER_SECRET']
       )
     end
@@ -27,19 +27,18 @@ module Oauth
     end
 
     def authorized?(params)
-      access_token = get_access_token params
-      authorized_client = authorize access_token
-      twitter = authorized_client.info
-      @profile = Oauth::Profile.new
-      @profile.provider = :twitter
-      @profile.provider_id = twitter['id']
+      access_token          = get_access_token(params)
+      authorized_client     = authorize(access_token)
+      twitter               = authorized_client.info
+      @profile              = Oauth::Profile.new
+      @profile.provider     = :twitter
+      @profile.provider_id  = twitter['id']
       @profile.display_name = twitter['screen_name']
-      @profile.email = twitter['email']
-      @profile.avatar = twitter['profile_image_url']
+      @profile.email        = twitter['email']
+      @profile.avatar       = twitter['profile_image_url']
     end
 
     private
-
     def get_access_token(params)
       @client.authorize(
         params[:oauth_token],
@@ -48,12 +47,13 @@ module Oauth
       )
     end
 
+    private
     def authorize(access_token)
       TwitterOAuth::Client.new(
-        consumer_key: ENV['TWITTER_KEY'],
+        consumer_key:    ENV['TWITTER_KEY'],
         consumer_secret: ENV['TWITTER_SECRET'],
-        token: access_token.token,
-        secret: access_token.secret
+        token:           access_token.token,
+        secret:          access_token.secret
       )
     end
   end

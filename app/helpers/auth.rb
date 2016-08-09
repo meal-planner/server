@@ -9,7 +9,7 @@ module MealPlanner
       def authenticated_user
         UserRepository.find_by_auth_token(auth_token)
       rescue SecurityError
-        halt 401, { error: 'Authentication required' }.to_json
+        halt 401, { error: 'Authentication required' }
       end
 
       # Sign in with given OAuth provider and request.
@@ -17,11 +17,11 @@ module MealPlanner
         request ||= parse_request
         oauth = "Oauth::#{provider.capitalize}Client".constantize.new
         unless oauth.authorized?(request)
-          halt 401, { error: 'Authentication failed' }.to_json
+          halt 401, { error: 'Authentication failed' }
         end
-        user = oauth_to_user oauth.profile
+        user = oauth_to_user(oauth.profile)
 
-        respond_with_token user
+        respond_with_token(user)
       end
 
       private
@@ -31,7 +31,7 @@ module MealPlanner
         user = find_user_by profile
         user.attributes = profile.to_h.except(:provider)
         user.password_token = nil
-        UserRepository.persist user
+        UserRepository.persist(user)
 
         user
       end
@@ -52,7 +52,7 @@ module MealPlanner
         user = UserRepository.klass.new
         user.password = SecureRandom.hex
         user.email = email
-        say_welcome_to user
+        say_welcome_to(user)
         user
       end
 

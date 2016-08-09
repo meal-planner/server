@@ -1,6 +1,6 @@
 # JSON Web Token, used for user authentication
 class Token
-  JWT_SECRET = ENV['JWT_SECRET']
+  JWT_SECRET    = ENV['JWT_SECRET']
   JWT_ALGORITHM = ENV['HS256']
 
   attr_reader :user_id
@@ -20,7 +20,7 @@ class Token
     JWT.encode(
       {
         user_id: user_id,
-        exp: (DateTime.now + 30).to_i
+        exp:     (DateTime.now + 30).to_i
       },
       JWT_SECRET,
       JWT_ALGORITHM
