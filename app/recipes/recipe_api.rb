@@ -113,7 +113,7 @@ class RecipeAPI < Sinatra::Base
 
   @apiHeader {String} authorization JWT (JSON Web Token)
   @apiHeaderExample Example auth header:
-  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ0.ekJkYZRhIjp7InVzZXJfaWQiOiJBVTlfM09YenNPZ0FZYjVDUFBaNyJ9LCJleHAiOjE0NzA5MTE4NjAsIm5iZiI6MTQ3MDgyNTE2MH9.yZ8oQLsobrzfEWPVZXlILCcDjLj6IUhDveNoO072zyc
 
   @apiParam {String}   name                       Recipe name
   @apiParam {String[]} steps                      List of cooking steps
@@ -152,7 +152,7 @@ class RecipeAPI < Sinatra::Base
 
   @apiHeader {String} authorization JWT (JSON Web Token)
   @apiHeaderExample Example auth header:
-  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ0.ekJkYZRhIjp7InVzZXJfaWQiOiJBVTlfM09YenNPZ0FZYjVDUFBaNyJ9LCJleHAiOjE0NzA5MTE4NjAsIm5iZiI6MTQ3MDgyNTE2MH9.yZ8oQLsobrzfEWPVZXlILCcDjLj6IUhDveNoO072zyc
 
   @apiParam {String}   id                           Recipe unique ID
   @apiParam {String}   [name]                       Recipe name

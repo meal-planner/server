@@ -1,29 +1,35 @@
 # JSON Web Token, used for user authentication
 class Token
-  JWT_SECRET    = ENV['JWT_SECRET']
-  JWT_ALGORITHM = ENV['HS256']
+  JWT_LEEWAY = 30
 
   attr_reader :user_id
 
   def initialize(token)
-    @payload = JWT.decode(token, JWT_SECRET, JWT_ALGORITHM).first
-    @user_id = @payload['user_id']
+    options  = {
+      algorithm: ENV['JWT_ALG'],
+      leeway:    JWT_LEEWAY
+    }
+    payload = JWT.decode(token, ENV['JWT_SECRET'], true, options).first
+    @user_id = payload['data']['user_id']
+  rescue JWT::ExpiredSignature
+  rescue JWT::ImmatureSignature
   rescue JWT::DecodeError
-    nil
+    fail SecurityError, 'Invalid Token'
   end
 
   def valid?
-    user_id.present? && Time.now < Time.at(@payload['exp'].to_i)
+    user_id.present?
   end
 
   def self.encode(user_id)
     JWT.encode(
       {
-        user_id: user_id,
-        exp:     (DateTime.now + 30).to_i
+        data: { user_id: user_id },
+        exp:  Time.now.to_i + 24 * 3600, # expire in 24 hours
+        nbf:  Time.now.to_i - 5 * 60 # not before claim
       },
-      JWT_SECRET,
-      JWT_ALGORITHM
+      ENV['JWT_SECRET'],
+      ENV['JWT_ALG']
     )
   end
 end
