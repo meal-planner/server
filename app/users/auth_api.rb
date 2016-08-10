@@ -56,7 +56,6 @@ class AuthAPI < Sinatra::Base
     sign_in :google
   end
 
-
 =begin
   @api {post} /auth/twitter Authenticate via Twitter
   @apiVersion 0.1.0
