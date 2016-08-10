@@ -22,10 +22,12 @@ Twitter OAuth sign in requires persistent storage of request tokens, so running 
 ## Installation
 
 * Install Bundler
+
   ```
   gem install bundler
   ```
 * Run Bundler
+
   ```
   bundle install
   ```
