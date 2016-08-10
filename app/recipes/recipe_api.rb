@@ -111,6 +111,10 @@ class RecipeAPI < Sinatra::Base
   @apiPermission authenticated user
   @apiSampleRequest off
 
+  @apiHeader {String} authorization JWT (JSON Web Token)
+  @apiHeaderExample Example auth header:
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
+
   @apiParam {String}   name                       Recipe name
   @apiParam {String[]} steps                      List of cooking steps
   @apiParam {Number}   servings                   Number of servings in this recipe
@@ -145,6 +149,10 @@ class RecipeAPI < Sinatra::Base
   @apiDescription Update recipe. This action can be performed only by authenticated owner of the recipe.
   @apiPermission owner
   @apiSampleRequest off
+
+  @apiHeader {String} authorization JWT (JSON Web Token)
+  @apiHeaderExample Example auth header:
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
 
   @apiParam {String}   id                           Recipe unique ID
   @apiParam {String}   [name]                       Recipe name

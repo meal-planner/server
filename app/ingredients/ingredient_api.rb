@@ -113,6 +113,10 @@ class IngredientAPI < Sinatra::Base
   @apiPermission authenticated user
   @apiSampleRequest off
 
+  @apiHeader {String} authorization JWT (JSON Web Token)
+  @apiHeaderExample Example auth header:
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
+
   @apiParam {String}   name                Ingredient name
   @apiParam {String}   group               Ingredient group (Fruits, Vegetables, Grains, etc)
   @apiParam {Boolean}  [generic]           Is ingredient generic?
@@ -144,6 +148,10 @@ class IngredientAPI < Sinatra::Base
   @apiDescription Update ingredient. This action can be performed only by authenticated owner of the ingredient.
   @apiPermission owner
   @apiSampleRequest off
+
+  @apiHeader {String} authorization JWT (JSON Web Token)
+  @apiHeaderExample Example auth header:
+  authorization: Bearer eyJ0eXAiOiJKV1QiLCJhyGciOiJub35lIn1.eyJ1c2VyX2lkIjoiQVU5XzNPWHpzT2dBWWI1Q1BQWjciLCJleHAiOjE0NzM0MTMzNzZ9.
 
   @apiParam {String}   id                    Ingredient unique ID
   @apiParam {String}   [name]                Ingredient name

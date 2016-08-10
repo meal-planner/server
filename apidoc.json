@@ -8,6 +8,8 @@
     "withCompare": false
   },
   "order": [
-    "Ingredient"
+    "Ingredients",
+    "Recipes",
+    "OAuth"
   ]
 }
