@@ -6,7 +6,7 @@ class RecipeAPI < Sinatra::Base
 
   before do
     content_type :json
-    params.each { |key, val| params[key] = nil if val && val.empty? }
+    remove_empty_params
   end
 
   after do

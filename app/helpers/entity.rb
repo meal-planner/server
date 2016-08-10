@@ -43,6 +43,10 @@ module MealPlanner
         )
       end
 
+      def remove_empty_params
+        params.each { |key, val| params[key] = nil if val && val.empty? }
+      end
+
       private
       def load_entity_from(repository)
         repository.find(params[:id])
