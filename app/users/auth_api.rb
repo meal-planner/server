@@ -91,4 +91,8 @@ class AuthAPI < Sinatra::Base
       sign_in(:twitter, request)
     end
   end
+
+  options '/*' do
+    200
+  end
 end

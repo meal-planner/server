@@ -116,4 +116,8 @@ class UserAPI < Sinatra::Base
     user = reset_user_password
     respond_with_token(user)
   end
+
+  options '/*' do
+    200
+  end
 end

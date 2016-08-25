@@ -184,4 +184,8 @@ class RecipeAPI < Sinatra::Base
   put '/:id' do
     update_entity_in(RecipeRepository)
   end
+
+  options '/*' do
+    200
+  end
 end
