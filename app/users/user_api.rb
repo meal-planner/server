@@ -8,7 +8,7 @@ class UserAPI < Sinatra::Base
     content_type :json
     headers 'Access-Control-Allow-Origin' => ENV['ALLOWED_CORS'],
       'Access-Control-Allow-Methods'      => %w(OPTIONS GET POST),
-      'Access-Control-Allow-Headers'      => 'Content-Type'
+      'Access-Control-Allow-Headers'      => 'Content-Type, Authorization'
   end
 
   after do
