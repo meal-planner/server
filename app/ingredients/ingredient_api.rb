@@ -6,6 +6,9 @@ class IngredientAPI < Sinatra::Base
 
   before do
     content_type :json
+    headers 'Access-Control-Allow-Origin' => ENV['ALLOWED_CORS'],
+      'Access-Control-Allow-Methods'      => %w(OPTIONS GET POST),
+      'Access-Control-Allow-Headers'      => 'Content-Type'
     remove_empty_params
   end
 
@@ -61,7 +64,7 @@ class IngredientAPI < Sinatra::Base
       { generic: { order: 'desc' } },
       { _score: { order: 'desc' } }
     ]
-    result = search
+    result        = search
     {
       total: result.response.hits.total,
       items: result.to_a
@@ -174,6 +177,10 @@ class IngredientAPI < Sinatra::Base
 =end
   put '/:id' do
     update_entity_in(IngredientRepository)
+  end
+
+  options '/*' do
+    200
   end
 
   private
