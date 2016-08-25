@@ -6,6 +6,8 @@ class IngredientRepository
   extend MealPlanner::Repository::FilteredSearch
   extend MealPlanner::Repository::Persist
 
+  client Elasticsearch::Client.new url: ENV['ELASTICSEARCH_URL'], log: true
+
   klass Ingredient
   validator IngredientValidator
 

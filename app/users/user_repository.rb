@@ -5,6 +5,8 @@ class UserRepository
   extend MealPlanner::Repository::TermQuery
   extend MealPlanner::Repository::Persist
 
+  client Elasticsearch::Client.new url: ENV['ELASTICSEARCH_URL'], log: true
+
   klass User
 
   index :users
