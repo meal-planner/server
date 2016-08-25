@@ -11,7 +11,7 @@ class IngredientRepository
   klass Ingredient
   validator IngredientValidator
 
-  index :ingredients
+  index :production
   type :ingredient
 
   def self.find_by_ids(ids)

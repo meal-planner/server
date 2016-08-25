@@ -11,6 +11,6 @@ class RecipeRepository
   klass Recipe
   validator RecipeValidator
 
-  index :recipes
+  index :production
   type :recipe
 end

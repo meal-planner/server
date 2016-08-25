@@ -9,7 +9,7 @@ class UserRepository
 
   klass User
 
-  index :users
+  index :production
   type :user
 
   class << self
