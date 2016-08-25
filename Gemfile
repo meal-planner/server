@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.2.3'
 
 # basics
 gem 'require_all'
@@ -7,6 +8,7 @@ gem 'newrelic_rpm'
 gem 'sinatra'
 gem 'dotenv'
 gem 'json'
+gem 'unicorn'
 # model and storage
 gem 'elasticsearch-persistence'
 gem 'veto'
@@ -25,7 +27,6 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'unicorn'
 end
 
 group :test do

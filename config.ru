@@ -1,4 +1,4 @@
-require_relative '../meal_planner'
+require_relative 'meal_planner'
 
 Dotenv.load '.env'
 

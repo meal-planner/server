@@ -1,28 +1,16 @@
-# define paths and filenames
-deploy_to = '/var/www/meal-planner.org/server'
-rack_root = "#{deploy_to}/current"
-pid_file = "#{deploy_to}/shared/pids/unicorn.pid"
-socket_file= "#{deploy_to}/shared/unicorn.sock"
-log_file = "#{rack_root}/log/unicorn.log"
-err_log = "#{rack_root}/log/unicorn_error.log"
-old_pid = pid_file + '.oldbin'
+worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
+timeout 15
+preload_app true
 
-timeout 30
-worker_processes 2
-listen socket_file, :backlog => 1024
+before_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
+    Process.kill 'QUIT', Process.pid
+  end
+end
 
-pid pid_file
-stderr_path err_log
-stdout_path log_file
-
-before_fork do |server, _|
-  # zero downtime deploy magic:
-  # if unicorn is already running, ask it to start a new process and quit.
-  if File.exists?(old_pid) && server.pid != old_pid
-    begin
-      Process.kill("QUIT", File.read(old_pid).to_i)
-    rescue Errno::ENOENT, Errno::ESRCH
-      # already done
-    end
+after_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
   end
 end
