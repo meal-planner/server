@@ -13,7 +13,9 @@ module Oauth
     private
 
     def get_authorization(params)
-      client_secrets     = Google::APIClient::ClientSecrets.load
+      client_secrets     = Google::APIClient::ClientSecrets.new(
+        JSON.parse(ENV['GOOGLE_CLIENT_SECRETS'])
+      )
       authorization      = client_secrets.to_authorization
       authorization.code = params[:code]
       authorization.fetch_access_token!
