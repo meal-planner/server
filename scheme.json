@@ -1,0 +1,376 @@
+{
+  "mappings": {
+    "recipe": {
+      "properties": {
+        "created_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "cuisine": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "diet": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "dish_type": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "ingredients": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "image_url": {
+              "type": "string"
+            },
+            "measure": {
+              "type": "string"
+            },
+            "measure_amount": {
+              "type": "long"
+            },
+            "name": {
+              "type": "string"
+            },
+            "position": {
+              "type": "long"
+            }
+          }
+        },
+        "key_ingredient": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "name": {
+          "type": "string",
+          "analyzer": "english"
+        },
+        "nutrients": {
+          "properties": {
+            "caffeine": {
+              "type": "long"
+            },
+            "calcium": {
+              "type": "double"
+            },
+            "carbohydrate": {
+              "type": "double"
+            },
+            "cholesterol": {
+              "type": "long"
+            },
+            "energy": {
+              "type": "double"
+            },
+            "fat": {
+              "type": "double"
+            },
+            "fat_monounsaturated": {
+              "type": "double"
+            },
+            "fat_polyunsaturated": {
+              "type": "double"
+            },
+            "fat_saturated": {
+              "type": "double"
+            },
+            "fat_trans": {
+              "type": "double"
+            },
+            "fiber": {
+              "type": "double"
+            },
+            "folate_dfe": {
+              "type": "long"
+            },
+            "iron": {
+              "type": "double"
+            },
+            "magnesium": {
+              "type": "double"
+            },
+            "niacin": {
+              "type": "double"
+            },
+            "phosphorus": {
+              "type": "double"
+            },
+            "potassium": {
+              "type": "long"
+            },
+            "protein": {
+              "type": "double"
+            },
+            "riboflavin": {
+              "type": "double"
+            },
+            "sodium": {
+              "type": "double"
+            },
+            "sugar": {
+              "type": "double"
+            },
+            "thiamin": {
+              "type": "double"
+            },
+            "vitamin_a_iu": {
+              "type": "long"
+            },
+            "vitamin_a_rae": {
+              "type": "long"
+            },
+            "vitamin_b12": {
+              "type": "long"
+            },
+            "vitamin_b6": {
+              "type": "double"
+            },
+            "vitamin_c": {
+              "type": "long"
+            },
+            "vitamin_d": {
+              "type": "long"
+            },
+            "vitamin_d2_d3": {
+              "type": "double"
+            },
+            "vitamin_e": {
+              "type": "double"
+            },
+            "vitamin_k": {
+              "type": "double"
+            },
+            "water": {
+              "type": "double"
+            },
+            "zinc": {
+              "type": "double"
+            }
+          }
+        },
+        "owner_id": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "servings": {
+          "type": "long"
+        },
+        "steps": {
+          "type": "string"
+        },
+        "time_to_cook": {
+          "type": "long"
+        },
+        "updated_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        }
+      }
+    },
+    "ingredient": {
+      "properties": {
+        "created_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "description": {
+          "type": "string",
+          "analyzer": "english"
+        },
+        "forked_from": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "generic": {
+          "type": "boolean"
+        },
+        "group": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "measures": {
+          "properties": {
+            "eqv": {
+              "type": "long"
+            },
+            "label": {
+              "type": "string"
+            },
+            "nutrients": {
+              "properties": {
+                "caffeine": {
+                  "type": "long"
+                },
+                "calcium": {
+                  "type": "long"
+                },
+                "carbohydrate": {
+                  "type": "double"
+                },
+                "cholesterol": {
+                  "type": "long"
+                },
+                "energy": {
+                  "type": "long"
+                },
+                "fat": {
+                  "type": "double"
+                },
+                "fat_monounsaturated": {
+                  "type": "double"
+                },
+                "fat_polyunsaturated": {
+                  "type": "double"
+                },
+                "fat_saturated": {
+                  "type": "double"
+                },
+                "fat_trans": {
+                  "type": "double"
+                },
+                "fiber": {
+                  "type": "long"
+                },
+                "folate_dfe": {
+                  "type": "long"
+                },
+                "iron": {
+                  "type": "double"
+                },
+                "magnesium": {
+                  "type": "long"
+                },
+                "niacin": {
+                  "type": "double"
+                },
+                "phosphorus": {
+                  "type": "long"
+                },
+                "potassium": {
+                  "type": "long"
+                },
+                "protein": {
+                  "type": "double"
+                },
+                "riboflavin": {
+                  "type": "double"
+                },
+                "sodium": {
+                  "type": "long"
+                },
+                "sugar": {
+                  "type": "double"
+                },
+                "thiamin": {
+                  "type": "double"
+                },
+                "vitamin_a_iu": {
+                  "type": "long"
+                },
+                "vitamin_a_rae": {
+                  "type": "long"
+                },
+                "vitamin_b12": {
+                  "type": "double"
+                },
+                "vitamin_b6": {
+                  "type": "double"
+                },
+                "vitamin_c": {
+                  "type": "long"
+                },
+                "vitamin_d": {
+                  "type": "long"
+                },
+                "vitamin_d2_d3": {
+                  "type": "double"
+                },
+                "vitamin_e": {
+                  "type": "double"
+                },
+                "vitamin_k": {
+                  "type": "double"
+                },
+                "water": {
+                  "type": "double"
+                },
+                "zinc": {
+                  "type": "double"
+                }
+              }
+            },
+            "qty": {
+              "type": "long"
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "analyzer": "english"
+        },
+        "ndbno": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "owner_id": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "ready_to_eat": {
+          "type": "boolean"
+        },
+        "updated_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        }
+      }
+    },
+    "user": {
+      "properties": {
+        "avatar": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "facebook": {
+          "type": "string"
+        },
+        "google": {
+          "type": "string"
+        },
+        "password_digest": {
+          "type": "string"
+        },
+        "password_token": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "twitter": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        }
+      }
+    }
+  }
+}
