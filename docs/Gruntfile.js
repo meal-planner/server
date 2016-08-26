@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         apidoc: {
             myapp: {
-                src: "app/",
+                src: "../app/",
                 dest: "_doc/"
             }
         },
