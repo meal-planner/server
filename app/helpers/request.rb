@@ -14,7 +14,7 @@ module MealPlanner
 
       def add_cors_headers
         headers 'Access-Control-Allow-Origin' => ENV['ALLOWED_CORS'],
-          'Access-Control-Allow-Methods'      => %w(OPTIONS GET POST),
+          'Access-Control-Allow-Methods'      => %w(OPTIONS GET POST PUT),
           'Access-Control-Allow-Headers'      => 'Content-Type, Authorization'
       end
     end
