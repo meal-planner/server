@@ -8,7 +8,7 @@
 Meal Planner is an open source recipe recommendation and nutrition balancing service - [meal-planner.org](https://meal-planner.org)
 
 This repository contains RESTful backend implementation.
-Resources documentation is available at [docs.meal-planner.org](https://docs.meal-planner.org/)
+Resources documentation - [docs.meal-planner.org](https://docs.meal-planner.org/)
 
 ## Requirements
 
@@ -51,10 +51,12 @@ First, login and create Heroku app:
   ```
   
 It will create new app on Heroku and add `heroku` remote to the repository.
-After that deployment can be don with a simple push:
+
+After that deployment can be done with a simple push:
   ```
   git push heroku master
   ```
 
 Configure all required environment variables with `heroku config:set VARIABLE_NAME=VALUE`
+
 See [.env.dist](https://github.com/meal-planner/server/blob/master/.env.dist) file for the list of used environment variables.
