@@ -11,6 +11,12 @@ module MealPlanner
           halt 400, { error: 'Request could not be processed' }
         end
       end
+
+      def add_cors_headers
+        headers 'Access-Control-Allow-Origin' => ENV['ALLOWED_CORS'],
+          'Access-Control-Allow-Methods'      => %w(OPTIONS GET POST),
+          'Access-Control-Allow-Headers'      => 'Content-Type, Authorization'
+      end
     end
   end
 end
