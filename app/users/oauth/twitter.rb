@@ -13,7 +13,7 @@ module Oauth
   # and redis to persist request token secret
   class TwitterClient < Oauth::Base
     def initialize
-      @redis  = Redis.new
+      @redis  = Redis.new(url: ENV['REDIS_URL'])
       @client = TwitterOAuth::Client.new(
         consumer_key:    ENV['TWITTER_KEY'],
         consumer_secret: ENV['TWITTER_SECRET']
