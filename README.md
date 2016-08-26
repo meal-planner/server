@@ -8,16 +8,17 @@
 Meal Planner is an open source recipe recommendation and nutrition balancing service - [meal-planner.org](https://meal-planner.org)
 
 This repository contains RESTful backend implementation.
-All available resources documentation is available at [docs.meal-planner.org](https://docs.meal-planner.org/)
+Resources documentation is available at [docs.meal-planner.org](https://docs.meal-planner.org/)
 
 ## Requirements
 
 This application is developed with [Sinatra](https://github.com/sinatra/sinatra) framework and requires [Ruby](https://www.ruby-lang.org/) to run and [Bundler](http://bundler.io/) to install it.
 
 All application data is stored in [ElasticSearch](https://www.elastic.co/products/elasticsearch) instance.
-This repository uses [Vagrant](https://www.vagrantup.com/) to run ElasticSearch, but it can also use any local or remote instance.
+[Bonsai.io](https://bonsai.io) is used to host ElasticSearch clusters.
 
-Twitter OAuth sign in requires persistent storage of request tokens, so running [Redis](http://redis.io/) instance is also required.
+Twitter OAuth sign in requires persistent storage of request tokens, 
+so running [Redis](http://redis.io/) instance is also required.
 
 ## Installation
 
@@ -34,19 +35,26 @@ Twitter OAuth sign in requires persistent storage of request tokens, so running 
 
 ## Running locally
 
-First, make sure to have ElasticSearch instance running locally.
-After that start Sinatra with Rack:
+Start Sinatra with Rack:  
 
   ```
-  cd config && rackup -p4567
+  rackup -p4567
   ```
 
 ## Deployment
-[Capistrano](http://capistranorb.com/) is used for deployment automation.
-Target server is defined in `config/deploy/production.rb`
+This application is deployed at [Heroku](https://heroku.com) and requires [Heroku toolbelt](https://toolbelt.heroku.com).
 
-To start deployment run:
+First, login and create Heroku app:
+  ```
+  heroku login
+  heroku create
+  ```
+  
+It will create new app on Heroku and add `heroku` remote to the repository.
+After that deployment can be don with a simple push:
+  ```
+  git push heroku master
+  ```
 
-  ```
-  cap production deploy
-  ```
+Configure all required environment variables with `heroku config:set VARIABLE_NAME=VALUE`
+See [.env.dist](https://github.com/meal-planner/server/blob/master/.env.dist) file for the list of used environment variables.
