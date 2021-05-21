@@ -201,7 +201,7 @@ DEPENDENCIES
   veto
 
 RUBY VERSION
-   ruby 2.2.3p173
+   ruby 2.5.0p0
 
 BUNDLED WITH
-   1.12.5
+   2.1.4
